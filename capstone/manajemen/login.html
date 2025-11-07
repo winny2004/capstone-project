@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Feedback Analytics System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Left Section -->
+      <div class="left-section">
+        <div class="content-top">
+          <h1 class="system-title">
+            Customer Feedback<br /><span>Analytics System</span>
+          </h1>
+          <p class="subtitle">Enhance Your Service with Data-Driven Insights</p>
+          <p class="desc">
+            An advanced system to understand customer needs and improve service
+            quality effectively.
+          </p>
+
+          <!-- Features -->
+          <div class="feature">
+            <div class="icon-box">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <div class="text">
+              <h4>Smart Analysis</h4>
+              <p>
+                Evaluasi feedback pelanggan dengan sistem yang intuitif dan
+                mudah digunakan, menghemat waktu dan sumber daya.
+              </p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="icon-box">
+              <i class="fa-solid fa-comment-dots"></i>
+            </div>
+            <div class="text">
+              <h4>Actionable Insights</h4>
+              <p>
+                Dapatkan insight yang dapat langsung diimplementasikan untuk
+                perbaikan layanan dan kepuasan pelanggan.
+              </p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="icon-box">
+              <i class="fa-solid fa-sack-dollar"></i>
+            </div>
+            <div class="text">
+              <h4>Loyalty Rewards</h4>
+              <p>
+                Tingkatkan engagement pelanggan melalui sistem reward dan
+                voucher yang menarik sebagai bentuk apresiasi.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p>Trusted by leading automotive service providers</p>
+          <p class="version">Customer Feedback Analytics System v2.3.31</p>
+          <p>© 2024 by PITCAR Service. All rights reserved.</p>
+          <p class="powered">
+            Powered by <span>Tim IT PITCAR</span>
+            <span class="code-tag">&lt;/&gt;</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Section -->
+      <div class="right-section">
+        <h2 class="welcome">Welcome Back! 👋</h2>
+        <p class="system-name">PITCAR Customer Feedback Analytics System</p>
+        <p class="login-sub">Login to access your dashboard</p>
+
+        <form class="login-form">
+          <label for="branch">Branch</label>
+          <select id="branch" required>
+            <option value="">Select Branch</option>
+            <option>Pitcar Service</option>
+            <option>OtoKitas X Pitcar Cilacap</option>
+            <option>Pitcar Body Repair</option>
+          </select>
+
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="pitcar@gmail.com"
+            required />
+
+          <label for="password">Password</label>
+          <div class="password-container">
+            <input
+              type="password"
+              id="password"
+              placeholder="pitcar12345"
+              required />
+            <span class="toggle-password" onclick="togglePassword()">
+              <i class="fa-solid fa-eye"></i>
+            </span>
+          </div>
+
+          <button type="submit" class="login-btn">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function togglePassword() {
+        const passwordField = document.getElementById("password");
+        const icon = document.querySelector(".toggle-password i");
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+          passwordField.type = "password";
+          icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    height: 100vh;
+    width: 100vw;
+    background-color: #f9f9f9;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+  }
+
+  /* Left Section */
+  .left-section {
+    width: 50%;
+    background-color: #f7f6f6;
+    padding: 50px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .content-top {
+    flex: 1;
+  }
+
+  .system-title {
+    color: #c20000;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-weight: 600;
+    color: #222;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .desc {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .feature {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #ffe3e3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+  }
+
+  .icon-box i {
+    color: #d0342c;
+    font-size: 18px;
+  }
+
+  .text h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 5px;
+  }
+
+  .text p {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.4;
+  }
+
+  .footer {
+    font-size: 12px;
+    color: #444;
+    padding-top: 10px;
+  }
+
+  .version {
+    font-weight: 600;
+    margin-top: 5px;
+  }
+
+  .powered span {
+    color: #d40000;
+    font-weight: 600;
+  }
+
+  .code-tag {
+    color: #d40000;
+  }
+
+  /* Right Section */
+  .right-section {
+    width: 50%;
+    background-color: #ffffff;
+    padding: 60px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .welcome {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 5px;
+  }
+
+  .system-name {
+    text-align: center;
+    font-size: 13px;
+    color: #444;
+    font-weight: 600;
+  }
+
+  .login-sub {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 25px;
+  }
+
+  .login-form label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #222;
+  }
+
+  .login-form input,
+  .login-form select {
+    width: 100%;
+    padding: 9px 12px;
+    margin: 5px 0 15px;
+    border: 1px solid #bfbfbf;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .password-container {
+    position: relative;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 9px;
+    cursor: pointer;
+    color: #555;
+  }
+
+  .toggle-password i {
+    font-size: 15px;
+  }
+
+  .login-btn {
+    width: 100%;
+    background-color: #b60000;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .login-btn:hover {
+    background-color: #990000;
+  }
+</style>
