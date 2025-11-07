@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verifikasi OTP - PITCAR</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      width: 250px;
+      height: auto;
+      margin-top: 20px;
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+      max-width: 800px;
+      margin: 30px auto;
+      gap: 60px;
+    }
+
+    .step {
+      text-align: center;
+      flex: 1;
+    }
+
+    .bar {
+      height: 6px;
+      width: 100%;
+      background-color: #d1d5db;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .bar.active {
+      background-color: #b91c1c;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .label.active {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    .underline {
+      width: 150px;
+      height: 6px;
+      background-color: #f4c7c7;
+      border-radius: 3px;
+      margin: 8px auto 16px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .otp-box {
+      background-color: #f5f2f2;
+      border-radius: 15px;
+      padding: 40px 20px;
+      margin-top: 20px;
+    }
+
+    .otp-box p {
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .otp-inputs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .otp-inputs input {
+      width: 40px;
+      height: 50px;
+      text-align: center;
+      font-size: 24px;
+      border: none;
+      border-bottom: 2px solid #555;
+      background-color: #f5f2f2;
+      outline: none;
+    }
+
+    .otp-inputs input:focus {
+      border-color: #b91c1c;
+    }
+
+    button {
+      background-color: #b91c1c;
+      color: white;
+      border: none;
+      padding: 12px 40px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+  <img src="image/pitcar.png" alt="Logo PITCAR" class="logo">
+
+  <div class="progress-container">
+    <div class="step">
+      <div class="bar active"></div>
+      <div class="label active">Memilih nomor kendaraan</div>
+    </div>
+    <div class="step">
+      <div class="bar"></div>
+      <div class="label">Beri Nilai</div>
+    </div>
+    <div class="step">
+      <div class="bar"></div>
+      <div class="label">Selesai</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Masukkan OTP</h2>
+    <div class="underline"></div>
+
+    <div class="otp-box">
+      <p>Silakan Masukkan Kode OTP</p>
+
+      <div class="otp-inputs">
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+      </div>
+
+      <button id="kirimOtpBtn">Kirim OTP</button>
+    </div>
+  </div>
+
+  <script>
+    // Autofokus ke input berikutnya setelah isi angka
+    const inputs = document.querySelectorAll('.otp-inputs input');
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', () => {
+        if (input.value && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
+    });
+
+    document.getElementById('kirimOtpBtn').addEventListener('click', () => {
+      alert('Kode OTP berhasil dikirim!');
+    });
+  </script>
+</body>
+</html>

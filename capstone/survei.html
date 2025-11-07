@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pilih Kendaraan - PITCAR</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      width: 250px;
+      height: auto;
+      margin-top: 20px;
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+      max-width: 800px;
+      margin: 30px auto;
+      gap: 60px;
+    }
+
+    .step {
+      text-align: center;
+      flex: 1;
+    }
+
+    .bar {
+      height: 6px;
+      width: 100%;
+      background-color: #d1d5db;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .bar.active {
+      background-color: #b91c1c;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .label.active {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    .underline {
+      width: 150px;
+      height: 6px;
+      background-color: #f4c7c7;
+      border-radius: 3px;
+      margin: 8px auto 16px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .container h2 {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    .container p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: #b91c1c;
+      transform: scale(1.05);
+    }
+
+    .card.selected {
+      border-color: #b91c1c;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .card.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .card img {
+      width: 40px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    .card .dinilai {
+      color: #16a34a;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    button {
+      background-color: #b91c1c;
+      color: white;
+      border: none;
+      padding: 12px 50px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #991b1b;
+    }
+
+    /* === Popup === */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal-content {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 90%;
+      animation: popIn 0.25s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content .emoji {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 20px;
+    }
+
+    .modal-content button {
+      background-color: #b91c1c;
+      border: none;
+      color: white;
+      padding: 10px 30px;
+      border-radius: 30px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background-color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+  <img src="image/pitcar.png" alt="Logo PITCAR" class="logo">
+
+  <div class="progress-container">
+    <div class="step">
+      <div class="bar active"></div>
+      <div class="label active">Memilih nomor kendaraan</div>
+    </div>
+    <div class="step">
+      <div class="bar"></div>
+      <div class="label">Beri Nilai</div>
+    </div>
+    <div class="step">
+      <div class="bar"></div>
+      <div class="label">Selesai</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Pilih Kendaraan</h2>
+    <div class="underline"></div>
+    <p>Silakan pilih nomor polisi kendaraan anda</p>
+
+    <div class="grid" id="kendaraanList"></div>
+
+    <button id="lanjutBtn">Lanjutkan</button>
+  </div>
+
+  <!-- Popup -->
+  <div class="modal" id="warningModal">
+    <div class="modal-content">
+      <div class="emoji">🔔</div>
+      <h3>Mohon untuk Pilih Kendaraan</h3>
+      <button id="closeModal">Pilih Kendaraan</button>
+    </div>
+  </div>
+
+  <script>
+    const kendaraan = [
+      { id: 'R1923AM', model: 'Honda Brio' },
+      { id: 'B1109PO', model: 'Toyota Sienta' },
+      { id: 'R8807MN', model: 'Honda Brio' },
+      { id: 'R1435KC', model: 'Honda Brio' },
+      { id: 'B1523MB', model: 'Toyota Agya' },
+      { id: 'B1111SH', model: 'Honda Brio' },
+      { id: 'R1098KU', model: 'Toyota Agya' },
+      { id: 'B6756JK', model: 'Honda Brio' },
+      { id: 'R2010MN', model: 'Daihatsu Sigra' },
+      { id: 'R1367KH', model: 'Honda Brio' },
+      { id: 'B6657UY', model: 'Honda Brio' },
+      { id: 'B6565FV', model: 'Honda Brio' },
+      { id: 'BK1174KB', model: 'Suzuki Ertiga 1.4' },
+      { id: 'R8876WC', model: 'Honda Brio' },
+      { id: 'B1907BV', model: 'Daihatsu Sigra', dinilai: true },
+      { id: 'B3408TR', model: 'Daihatsu Sigra', dinilai: true },
+    ];
+
+    const container = document.getElementById('kendaraanList');
+    const lanjutBtn = document.getElementById('lanjutBtn');
+    const modal = document.getElementById('warningModal');
+    const closeModal = document.getElementById('closeModal');
+    let selected = null;
+
+    kendaraan.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card' + (item.dinilai ? ' disabled' : '');
+      card.innerHTML = `
+        <img src="image/mobilicon.png" alt="car icon">
+        <p><strong>${item.id}</strong></p>
+        <p>${item.model}</p>
+        ${item.dinilai ? '<p class="dinilai">Sudah Dinilai</p>' : ''}
+      `;
+      if (!item.dinilai) {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selected = item.id;
+        });
+      }
+      container.appendChild(card);
+    });
+
+    lanjutBtn.addEventListener('click', () => {
+      if (selected) {
+        window.location.href = "otp.html";
+      } else {
+        modal.style.display = "flex"; 
+      }
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    });
+  </script>
+</body>
+</html>
