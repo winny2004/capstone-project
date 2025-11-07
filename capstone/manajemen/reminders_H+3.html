@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PITCAR Dashboard Reminder H+3</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f5f6fa;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 240px;
+        background-color: #fff;
+        border-right: 1px solid #e6e6e6;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .sidebar .logo {
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .sidebar .logo img {
+        width: 150px;
+      }
+
+      .menu {
+        flex: 1;
+        padding: 10px 0;
+      }
+
+      .menu ul {
+        list-style: none;
+      }
+
+      .menu li {
+        padding: 12px 24px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        color: #333;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .menu li:hover,
+      .menu li.active {
+        background-color: #fbeaea;
+        color: #c20000;
+        font-weight: 600;
+      }
+
+      .menu li i {
+        margin-right: 10px;
+      }
+
+      .user-section {
+        padding: 15px 24px;
+        border-top: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-section img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+      }
+
+      .user-section .user-info {
+        font-size: 13px;
+      }
+
+      .user-section .user-info .name {
+        font-weight: 600;
+      }
+
+      /* Main content */
+      .main {
+        flex: 1;
+        padding: 25px 35px;
+        overflow-y: auto;
+      }
+
+      .header h2 {
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .subtext {
+        color: #666;
+        font-size: 14px;
+        margin-top: 3px;
+      }
+
+      /* Stats cards */
+      .stats {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .card {
+        background: #fff;
+        flex: 1;
+        border-radius: 8px;
+        padding: 15px 20px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .card h3 {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .card p {
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 6px;
+      }
+
+      /* Follow Up Section */
+      .followup {
+        background: #fff;
+        margin-top: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #555;
+        text-align: center;
+      }
+
+      /* Table Section */
+      .table-section {
+        background: #fff;
+        margin-top: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .table-section h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .filters select,
+      .filters input {
+        padding: 6px 8px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      .table-container {
+        max-height: 420px;
+        overflow-y: scroll;
+        border-top: 1px solid #eee;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        font-size: 13px;
+      }
+
+      th {
+        color: #555;
+        background-color: #fafafa;
+        font-weight: 600;
+      }
+
+      td a {
+        color: #c20000;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      td a:hover {
+        text-decoration: underline;
+      }
+
+      /* Pagination */
+      .pagination {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 13px;
+        gap: 10px;
+      }
+
+      .pagination button {
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+      }
+
+      .pagination button.active {
+        background: #c20000;
+        color: #fff;
+        border-color: #c20000;
+      }
+
+      .pagination button:hover {
+        background: #fbeaea;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div>
+        <div class="logo">
+          <img
+            src="https://i.ibb.co/hmpj0hs/pitcar-logo.png"
+            alt="Pitcar Logo" />
+        </div>
+        <div class="menu">
+          <ul>
+            <li><i>🏠</i>Dashboard</li>
+            <li><i>⭐</i>Reviews</li>
+            <li><i>📝</i>Survey</li>
+            <li class="active"><i>⏰</i>Reminder H+3</li>
+            <li>
+              <i>🔔</i>Reminders
+              <span style="color: green; font-weight: 600; margin-left: 4px"
+                >New</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="user-section">
+        <img src="https://i.ibb.co/4sM7Zdb/user-icon.png" alt="User Icon" />
+        <div class="user-info">
+          <div class="name">Pitcar Service</div>
+          <div>User</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <h2>Dashboard Reminder H+3</h2>
+        <p class="subtext">Follow up pelanggan setelah 3 hari servis</p>
+      </div>
+
+      <div class="stats">
+        <div class="card">
+          <h3>Pending Reminder</h3>
+          <p>7 order</p>
+        </div>
+        <div class="card">
+          <h3>Total Reminder Sent</h3>
+          <p>3644 reminders</p>
+        </div>
+        <div class="card">
+          <h3>Feedback Received</h3>
+          <p>366 responses</p>
+        </div>
+        <div class="card">
+          <h3>Response Rate</h3>
+          <p>10.56%</p>
+        </div>
+      </div>
+
+      <div class="followup">
+        Sudah tidak ada reminder hari ini<br />
+        Semua pelanggan sudah dikirimkan
+      </div>
+
+      <div class="table-section">
+        <h3>Service History & Reminder Status</h3>
+        <div class="filters">
+          <input type="text" placeholder="Order/Customer atau Plat" />
+          <select>
+            <option>Semua Waktu</option>
+          </select>
+          <select>
+            <option>Semua Status</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Order No</th>
+                <th>Customer</th>
+                <th>Plat No</th>
+                <th>Service Advisor</th>
+                <th>Status Reminder</th>
+                <th>Feedback</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 10 customer dummy -->
+              <tr>
+                <td>S17154</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17155</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17156</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17157</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17158</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17159</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17160</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17161</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17162</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+              <tr>
+                <td>S17163</td>
+                <td>Pak Indra Setiawan<br /><small>0819877777</small></td>
+                <td>AA1568PR</td>
+                <td>Rizqo Rusli Erdiantoro</td>
+                <td>Belum Dikirim</td>
+                <td>Belum ada feedback</td>
+                <td><a href="#">Kirim Reminder</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <span>10 / Page</span>
+          <span>Showing 1-10 of 7291</span>
+          <button>First</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>Last</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
