@@ -127,8 +127,8 @@
 
     .card .divider {
       border: none;
-      border-top: 1px solid #ccc; /* warna dan ketebalan garis */
-      margin: 15px 0 18px 0;      /* jarak atas-bawah */
+      border-top: 1px solid #ccc;
+      margin: 15px 0 18px 0;
     }
 
     .card h6 {
@@ -150,19 +150,19 @@
     .rekomendasi h4 {
       margin-top: 0;
       font-size: 15px;
-      color: #01468A; /* judul biru */
+      color: #01468A;
       font-weight: 700;
       display: flex;
-      align-items: center; /* sejajarkan ikon dengan teks */
+      align-items: center;
       margin-left: 50px;
     }
 
     .rekomendasi .rekom-text {
-      color: #01468A; /* teks deskripsi biru */
+      color: #01468A;
       margin: 15px 0;
       font-size: 14px;
       margin-left: 78px;
-      max-width: 600px; /* <== batasi lebar paragraf */
+      max-width: 600px;
       line-height: 1.5;
     }
 
@@ -177,25 +177,24 @@
     }
 
     .rekomendasi .rekom-km {
-      color: #01468A; /* 5.000 KM */
+      color: #01468A;
       font-weight: 700;
       display: flex;
       align-items: center;
     }
 
     .rekomendasi .atau {
-      color: #0365C7; /* kata 'atau' */
+      color: #0365C7;
       font-weight: 600;
     }
 
     .rekomendasi .rekom-date {
-      color: #01468A; /* tanggal */
+      color: #01468A;
       font-weight: 700;
       display: flex;
       align-items: center;
     }
 
-    /* === Ikon Styling === */
     .ikon-judul {
       width: 20px;
       height: 20px;
@@ -231,57 +230,118 @@
       background-color: #991b1b;
     }
 
-    /* === Popup === */
+    /* === Popup Rating === */
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.5);
       justify-content: center;
       align-items: center;
-      z-index: 10;
+      z-index: 1000;
     }
 
-    .modal-content {
-      background-color: white;
+    .rating-content {
+      background-color: #fff;
       border-radius: 16px;
       padding: 30px;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      max-width: 400px;
-      width: 90%;
+      width: 92%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       animation: popIn 0.25s ease;
+      text-align: center;
     }
 
     @keyframes popIn {
-      from { transform: scale(0.9); opacity: 0; }
+      from { transform: scale(0.95); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
 
-    .modal-content h3 {
-      margin-bottom: 15px;
+    .rating-content h2 {
+      margin-top: 0;
+      color: #1c1b1b;
     }
 
-    .modal-content p {
-      font-size: 14px;
+    .rating-section {
       margin-bottom: 20px;
-      color: #333;
     }
 
-    .modal-actions {
+    .rating-section h3 {
+      color: #000000;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .rating-category {
       display: flex;
-      justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
+      justify-content: center;
     }
 
-    .modal-actions button:first-child {
-      background-color: #e5e7eb;
-      color: #111;
+    .item {
+      background: #f7f5f5;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column; /* vertical layout */
+      align-items: center;
+      gap: 6px;
+      min-width: 120px;
     }
 
-    .modal-actions button:first-child:hover {
-      background-color: #d1d5db;
+    .stars {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .star {
+      font-size: 20px;
+      color: #ccc;
+      transition: color 0.15s ease;
+    }
+
+    .star.active {
+      color: #facc15;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      resize: none;
+      font-family: inherit;
+      margin-bottom: 12px;
+    }
+
+    #submitRating {
+      display: block;
+      margin: 8px auto 0;
+      background-color: #b91c1c;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #submitRating:hover {
+      background-color: #991b1b;
+    }
+
+    @media (max-width: 520px) {
+      .item { min-width: 100%; }
+      .rating-content { padding: 20px; }
     }
   </style>
 </head>
@@ -334,7 +394,7 @@
     </div>
 
     <div class="rekomendasi">
-      <br><h4>
+      <h4>
         <img src="image/ikonjam.png" alt="ikon servis" class="ikon-judul">
         Rekomendasi Servis Berikutnya
       </h4>
@@ -359,35 +419,185 @@
     </div>
   </div>
 
-  <!-- Popup Konfirmasi -->
-  <div class="modal" id="confirmModal">
-    <div class="modal-content">
-      <h3>Konfirmasi Penilaian</h3>
-      <p>Anda akan memberikan penilaian untuk kendaraan dengan nomor polisi <strong>R1923AM</strong>. Lanjutkan?</p>
-      <div class="modal-actions">
-        <button id="cancelBtn">Batal</button>
-        <button id="confirmBtn">Lanjutkan</button>
+  <!-- ===== Popup Form Penilaian Vertikal dengan Gambar ===== -->
+  <div class="modal" id="ratingModal" aria-hidden="true" role="dialog">
+    <div class="rating-content" role="document">
+      <h2>Bagaimana Pengalaman Anda?</h2>
+      <p>Penilaian Anda sangat berarti bagi kami untuk terus meningkatkan kualitas pelayanan.</p>
+
+      <!-- Fasilitas -->
+      <div class="rating-section">
+        <br><h3>Fasilitas</h3>
+        <div class="rating-category">
+          <div class="item">
+            <img src="image/ruang-tunggu.png" alt="Ruang Tunggu" style="width:50px;">
+            <span>Ruang Tunggu</span>
+            <div class="stars" data-category="Ruang Tunggu"></div>
+          </div>
+          <div class="item">
+            <br><img src="image/musholla.png" alt="Musholla" style="width:50px;">
+            <span>Musholla</span>
+            <div class="stars" data-category="Musholla"></div>
+          </div>
+          <div class="item">
+            <br><img src="image/kamar-mandi.png" alt="Kamar Mandi" style="width:50px;">
+            <span>Kamar Mandi</span>
+            <div class="stars" data-category="Kamar Mandi"></div>
+          </div>
+          <div class="item">
+            <br><img src="image/makanan-minuman.png" alt="Makanan & Minuman" style="width:50px;">
+            <span>Makanan & Minuman</span>
+            <div class="stars" data-category="Makanan"></div>
+          </div>
+          <div class="item">
+            <br><img src="image/parkiran.png" alt="Parkiran Mobil" style="width:50px;">
+            <span>Parkiran Mobil</span>
+            <div class="stars" data-category="Parkiran"></div>
+          </div>
+        </div>
       </div>
+
+      <!-- Harga -->
+      <div class="rating-section">
+        <br><h3>Harga</h3>
+        <div class="item">
+          <img src="image/harga.png" alt="Harga & Kualitas Servis" style="width:50px;">
+          <span>Harga & Kualitas Servis</span>
+          <div class="stars" data-category="Harga"></div>
+        </div>
+      </div>
+
+      <!-- Pelayanan -->
+      <div class="rating-section">
+        <br><h3>Pelayanan</h3>
+        <div class="rating-category">
+          <div class="item">
+            <br><img src="image/staf.png" alt="Pelayanan Staf" style="width:50px;">
+            <span>Pelayanan Staf</span>
+            <div class="stars" data-category="Staf"></div>
+          </div>
+          <div class="item">
+            <br><img src="image/kualitas.png" alt="Hasil & Kualitas Servis" style="width:50px;">
+            <span>Hasil & Kualitas Servis</span>
+            <div class="stars" data-category="Kualitas Servis"></div>
+          </div>
+          <div class="item">
+            <br><img src="image/garansi.png" alt="Garansi" style="width:50px;">
+            <span>Garansi</span>
+            <div class="stars" data-category="Garansi"></div>
+          </div>
+          <div class="item">
+            <br><img src="image/booking.png" alt="Booking Online" style="width:50px;">
+            <span>Booking Online</span>
+            <div class="stars" data-category="Booking"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ceritakan Pengalaman -->
+      <div class="rating-section">
+        <br><h3>Ceritakan Pengalaman Anda</h3>
+        <p>Bagikan pengalaman detail anda selama proses servis. Hal Ini akan membantu kami dan pelanggan yang lain</p>
+        <textarea id="feedback" placeholder="Contoh: Pelayanan dangat ramah dan profesional. Ruang tunggu nyaman dengan fasilitas lengkap. Harga sesuai dengan kualitas serta pelayanna yang diberikan" rows="4"></textarea>
+        <p>*Penilaian anda akan membantu meningkatkan kualitas layanan kami dan menjadi referensi bagi pelanggan lainnya</p>
+      </div>
+
+      <button id="submitRating"><strong>Kirim Penilaian</strong></button>
     </div>
   </div>
 
   <script>
-    const modal = document.getElementById('confirmModal');
     const beriBtn = document.getElementById('beriBtn');
     const beriBtnBottom = document.getElementById('beriBtnBottom');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const confirmBtn = document.getElementById('confirmBtn');
+    const ratingModal = document.getElementById('ratingModal');
+    const submitRating = document.getElementById('submitRating');
+    const feedbackEl = document.getElementById('feedback');
+    const ratings = {};
 
-    beriBtn.addEventListener('click', () => modal.style.display = "flex");
-    beriBtnBottom.addEventListener('click', () => modal.style.display = "flex");
-
-    cancelBtn.addEventListener('click', () => modal.style.display = "none");
-    confirmBtn.addEventListener('click', () => {
-      window.location.href = "rating.html"; // Ganti ke halaman berikutnya
+    beriBtn.addEventListener('click', () => {
+      ratingModal.style.display = 'flex';
+      ratingModal.setAttribute('aria-hidden', 'false');
+    });
+    beriBtnBottom.addEventListener('click', () => {
+      ratingModal.style.display = 'flex';
+      ratingModal.setAttribute('aria-hidden', 'false');
     });
 
     window.addEventListener('click', (e) => {
-      if (e.target === modal) modal.style.display = "none";
+      if (e.target === ratingModal) closeModal();
+    });
+
+    function closeModal() {
+      ratingModal.style.display = 'none';
+      ratingModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function createStars(container) {
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.classList.add('star');
+        star.innerText = '★';
+        star.dataset.value = i;
+        container.appendChild(star);
+      }
+
+      const starEls = container.querySelectorAll('.star');
+      const category = container.dataset.category || 'unknown';
+
+      starEls.forEach(star => {
+        star.addEventListener('click', () => {
+          const val = Number(star.dataset.value);
+          ratings[category] = val;
+          starEls.forEach(s => s.classList.remove('active'));
+          for (let k = 0; k < val; k++) starEls[k].classList.add('active');
+        });
+
+        star.addEventListener('mouseenter', () => {
+          const hoverVal = Number(star.dataset.value);
+          starEls.forEach(s => s.classList.remove('active'));
+          for (let k = 0; k < hoverVal; k++) starEls[k].classList.add('active');
+        });
+      });
+
+      container.addEventListener('mouseleave', () => {
+        const saved = ratings[category] || 0;
+        starEls.forEach(s => s.classList.remove('active'));
+        for (let k = 0; k < saved; k++) starEls[k].classList.add('active');
+      });
+    }
+
+    document.querySelectorAll('.stars').forEach(container => {
+      createStars(container);
+    });
+
+    submitRating.addEventListener('click', () => {
+      const anyRated = Object.keys(ratings).length > 0;
+      const feedback = feedbackEl.value.trim();
+      let summary = 'Terima kasih atas penilaian Anda!\n\n';
+      if (anyRated) {
+        summary += 'Rating:\n';
+        for (const [cat, val] of Object.entries(ratings)) {
+          summary += `• ${cat}: ${val} ⭐\n`;
+        }
+      } else {
+        summary += 'Anda belum memberikan rating pada kategori manapun.\n';
+      }
+      if (feedback) summary += `\nKomentar: ${feedback}\n`;
+      alert(summary);
+
+      document.querySelectorAll('.stars').forEach(container => {
+        const starEls = container.querySelectorAll('.star');
+        starEls.forEach(s => s.classList.remove('active'));
+      });
+      for (const k in ratings) delete ratings[k];
+      feedbackEl.value = '';
+      closeModal();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && ratingModal.style.display === 'flex') {
+        closeModal();
+      }
     });
   </script>
 </body>
