@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selesai Survei - PITCAR</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      width: 250px;
+      height: auto;
+      margin-top: 20px;
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+      max-width: 800px;
+      margin: 30px auto;
+      gap: 60px;
+    }
+
+    .step {
+      text-align: center;
+      flex: 1;
+    }
+
+    .bar {
+      height: 6px;
+      width: 100%;
+      background-color: #d1d5db;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .bar.active {
+      background-color: #b91c1c;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .label.active {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-top: 10px;
+    }
+
+    .underline {
+      width: 150px;
+      height: 6px;
+      background-color: #f4c7c7;
+      border-radius: 3px;
+      margin: 1px auto 20px;
+    }
+
+    .otp-container {
+      background-color: #f7f5f5;
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      position: relative;
+      z-index: 1;
+    }
+
+    .icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #dcfce7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 25px;
+      border: 3px solid #22c55e;
+    }
+
+    .check-icon {
+      width: 70px;
+      height: auto;
+    }
+
+    .otp-success {
+      font-size: 18px;
+      font-weight: 600;
+      color: #b91c1c;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: #b91c1c;
+      color: white;
+      border: none;
+      padding: 12px 50px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="image/pitcar.png" alt="Logo PITCAR" class="logo">
+
+  <div class="progress-container">
+    <div class="step">
+      <div class="bar"></div>
+      <div class="label">Memilih nomor kendaraan</div>
+    </div>
+    <div class="step">
+      <div class="bar"></div>
+      <div class="label">Beri Nilai</div>
+    </div>
+    <div class="step">
+      <div class="bar active"></div>
+      <div class="label active">Selesai</div>
+    </div>
+  </div>
+
+  <h2>Penilaian Rating Selesai</h2>
+  <div class="underline"></div><br>
+
+  <br><div class="icon">
+      <img src="image/ikonceklis.png" alt="Icon Ceklis" class="check-icon">
+  </div><br>
+
+  <!-- Tombol -->
+  <br><button class="btn" onclick="window.location.href='survei.html'">Terima Kasih</button>
+
+</body>
+</html>

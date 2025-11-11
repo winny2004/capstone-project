@@ -1,412 +1,476 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PITCAR — Dashboard Reminder H+3</title>
-
-    <!-- Poppins font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PITCAR Dashboard Reminder H+3</title>
     <style>
-      :root {
-        --bg: #f5f6fa;
-        --panel: #ffffff;
-        --muted: #666b70;
-        --border: #e6e6e6;
-        --accent: #c20000;
-        --soft-accent: #fbeaea;
-      }
-
       * {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
       }
 
       body {
-        margin: 0;
-        font-family: "Poppins", system-ui, Arial;
-        background: var(--bg);
-        color: #222;
-        line-height: 1.3;
-      }
-
-      /* ===== LAYOUT ===== */
-      .app {
+        background-color: #f5f6fa;
         display: flex;
-        min-height: 100vh;
-        align-items: stretch;
-        width: 100%;
+        height: 100vh;
+        overflow: hidden;
       }
+      /* Sidebar */
 
-      /* ===== SIDEBAR ===== */
       .sidebar {
-        width: 240px;
-        background: var(--panel);
-        border-right: 1px solid var(--border);
+        width: 80px;
+        background-color: #fff;
+        border-right: 1px solid #e6e6e6;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 18px 16px;
-        gap: 14px;
-        transition: all 0.3s ease;
+        transition: width 0.3s ease;
         overflow: hidden;
+        position: relative;
       }
 
-      /* Ketika sidebar mengecil */
-      .sidebar.collapsed {
-        width: 70px;
-        padding: 18px 10px;
+      .sidebar:hover {
+        width: 240px;
       }
 
-      /* Logo */
-      .logo {
-        padding: 6px 6px 14px;
-        border-bottom: 1px solid var(--border);
-        text-align: left;
-      }
-      .logo img {
-        width: 140px;
-        display: block;
-        transition: all 0.3s ease;
-      }
-
-      /* Menu */
-      nav.menu {
-        padding-top: 12px;
-      }
-
-      .menu-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
+      .sidebar .logo {
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
         display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .menu-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 12px;
-        border-radius: 10px;
-        font-size: 15px;
-        color: #2e2e2e;
-        cursor: pointer;
-        transition: all 0.18s ease;
-      }
-
-      .menu-item svg {
-        width: 18px;
-        height: 18px;
-        flex-shrink: 0;
-        opacity: 0.95;
-        transition: all 0.3s ease;
-      }
-
-      .menu-item .label {
-        font-weight: 600;
-        transition: opacity 0.3s ease;
-      }
-
-      .menu-item:hover {
-        background: var(--soft-accent);
-        color: var(--accent);
-      }
-
-      .menu-item.active {
-        background: var(--accent);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(194, 0, 0, 0.12);
-      }
-
-      .menu-item.active svg path {
-        fill: #fff !important;
-      }
-
-      .menu-item .new-badge {
-        margin-left: auto;
-        background: #def7e0;
-        color: #0d7a2a;
-        font-weight: 700;
-        font-size: 11px;
-        padding: 4px 6px;
-        border-radius: 6px;
-        transition: opacity 0.3s ease;
-      }
-
-      /* Saat collapsed - sembunyikan teks & badge */
-      .sidebar.collapsed .label,
-      .sidebar.collapsed .new-badge,
-      .sidebar.collapsed .userbox .meta {
-        display: none;
-      }
-
-      .sidebar.collapsed .menu-item {
         justify-content: center;
-        padding: 12px 0;
-      }
-
-      .sidebar.collapsed .menu-item svg {
-        width: 22px;
-        height: 22px;
-      }
-
-      /* User box */
-      .userbox {
-        display: flex;
-        gap: 10px;
         align-items: center;
-        border-top: 1px solid var(--border);
-        padding-top: 12px;
-        transition: all 0.3s ease;
       }
 
-      .userbox img {
-        width: 40px;
-        height: 40px;
+      .sidebar .logo .full-logo {
+        width: 150px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar .logo .small-logo {
+        width: 24px;
+        height: 24px;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        position: absolute;
+      }
+
+      .sidebar:hover .logo .full-logo {
+        opacity: 1;
+      }
+
+      .sidebar:hover .logo .small-logo {
+        opacity: 0;
+      }
+
+      .menu li span {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .sidebar:hover .menu li span {
+        opacity: 1;
+      }
+
+      .sidebar .user-section .user-info {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar:hover .user-section .user-info {
+        opacity: 1;
+      }
+
+      .menu {
+        flex: 1;
+        padding: 10px 0;
+      }
+
+      .menu ul {
+        list-style: none;
+      }
+
+      .menu li {
+        padding: 12px 24px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        color: #333;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .menu li:hover,
+      .menu li.active {
+        background-color: #fbeaea;
+        color: #c20000;
+        font-weight: 600;
+      }
+
+      .menu li i {
+        margin-right: 10px;
+        font-size: 24px;
+      }
+
+      .menu li i {
+        margin-right: 10px;
+        font-size: 24px;
+      }
+
+      .menu li img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        object-fit: contain;
+      }
+
+      .user-section {
+        padding: 15px 24px;
+        border-top: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-section img {
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
       }
 
-      .userbox .meta {
+      .user-section .user-info {
         font-size: 13px;
-        color: var(--muted);
       }
 
-      .userbox .meta .name {
-        font-weight: 700;
-        color: #222;
+      .user-section .user-info .name {
+        font-weight: 600;
       }
+      /* Main content */
 
-      /* ===== MAIN CONTENT ===== */
       .main {
         flex: 1;
-        padding: 26px 34px;
-        overflow: auto;
-        transition: all 0.3s ease;
+        padding: 25px 35px;
+        overflow-y: auto;
       }
 
-      .header h1 {
+      .header h2 {
         font-size: 20px;
-        margin: 0;
         font-weight: 700;
       }
 
-      .sub {
-        color: var(--muted);
-        font-size: 13px;
-        margin-top: 4px;
+      .subtext {
+        color: #666;
+        font-size: 14px;
+        margin-top: 3px;
       }
+      /* Stats cards */
 
       .stats {
         display: flex;
-        gap: 14px;
-        margin-top: 18px;
+        gap: 15px;
+        margin-top: 20px;
       }
 
-      .stat {
-        background: var(--panel);
+      .card {
+        background: #fff;
         flex: 1;
-        border-radius: 12px;
-        padding: 14px 18px;
-        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 15px 20px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       }
 
-      .stat .title {
-        font-size: 13px;
-        color: var(--muted);
-        font-weight: 600;
+      .card h3 {
+        font-size: 14px;
+        color: #666;
       }
 
-      .stat .value {
-        font-weight: 700;
+      .card p {
         font-size: 20px;
+        font-weight: 600;
         margin-top: 6px;
       }
+      /* Follow Up Section Header */
 
-      .follow {
-        margin-top: 18px;
-        background: var(--panel);
-        padding: 12px 14px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-      }
-
-      .follow strong {
-        display: block;
-        font-size: 15px;
-        font-weight: 700;
-        color: #222;
-        margin-bottom: 8px;
-        padding-bottom: 6px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .follow .small {
-        display: block;
-        font-size: 13px;
-        color: #9b9b9b;
-        text-align: center;
-      }
-
-      /* Table */
-      .card-panel {
-        margin-top: 18px;
-        background: var(--panel);
-        border-radius: 12px;
-        padding: 18px;
-        border: 1px solid var(--border);
-      }
-
-      .card-panel h3 {
-        margin: 0;
+      .followup-header {
+        background: #fff;
+        margin-top: 20px;
+        padding: 15px 20px 10px 20px;
+        border-radius: 8px 8px 0 0;
         font-size: 16px;
-        font-weight: 700;
-        color: #252525;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #e6e6e6;
+      }
+      /* Follow Up Section */
+
+      .followup {
+        background: #fff;
+        padding: 15px 20px;
+        border-radius: 0 0 8px 8px;
+        font-size: 14px;
+        color: #555;
+        text-align: center;
+        margin-top: 0;
+      }
+      /* Table Section */
+
+      .table-section {
+        background: #fff;
+        margin-top: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .table-section h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: end;
+      }
+
+      .custom-date-range {
+        display: none;
+        gap: 10px;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .filter-group label {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+
+      .filters select,
+      .filters input {
+        padding: 6px 8px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      .table-container {
+        max-height: 420px;
+        overflow-y: scroll;
+        border-top: 1px solid #eee;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 14px;
       }
 
-      thead th {
-        background: #fafafa;
-        padding: 12px 12px;
+      th,
+      td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #eee;
         text-align: left;
-        font-weight: 700;
-        color: var(--muted);
         font-size: 13px;
-        border-bottom: 1px solid var(--border);
       }
 
-      tbody td {
-        padding: 14px 12px;
-        font-size: 13px;
-        color: #333;
-        border-bottom: 1px solid #f0f0f0;
+      th {
+        color: #555;
+        background-color: #fafafa;
+        font-weight: 600;
       }
+      /* Status badge styling */
 
-      tbody tr:hover {
-        background: #f2f2f2;
-      }
-
-      .send-btn {
+      .status-badge {
+        background-color: #f5f5f5;
+        padding: 4px 8px;
+        border-radius: 4px;
         display: inline-block;
-        padding: 8px 10px;
-        border-radius: 8px;
-        border: 1px solid rgba(194, 0, 0, 0.08);
-        color: var(--accent);
-        font-weight: 700;
-        cursor: pointer;
-        background: transparent;
+        text-align: center;
       }
 
-      .send-btn:hover {
-        background: var(--soft-accent);
+      td a {
+        color: #c20000;
+        text-decoration: none;
+        font-weight: 600;
+        white-space: pre-line;
+      }
+
+      td a:hover {
+        text-decoration: underline;
+      }
+      /* Pagination */
+
+      .pagination {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 13px;
+        gap: 10px;
+      }
+
+      .pagination button {
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+      }
+
+      .pagination button.active {
+        background: #c20000;
+        color: #fff;
+        border-color: #c20000;
+      }
+
+      .pagination button:hover {
+        background: #fbeaea;
       }
     </style>
   </head>
+
   <body>
-    <div class="app">
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-content">
-          <div class="logo">
-            <img src="../image/pitcar.png" alt="Pitcar Logo" />
+    <div class="sidebar">
+      <div>
+        <div class="logo">
+          <img src="../image/pitcar.png" alt="Pitcar Logo" class="full-logo" />
+          <img
+            src="../image/logopitcar.png"
+            alt="Pitcar Small Logo"
+            class="small-logo" />
+        </div>
+        <div class="menu">
+          <ul>
+            <li>
+              <img src="../image/ikonhome.png" alt="Dashboard Icon" /><span
+                >Dashboard</span
+              >
+            </li>
+            <li>
+              <img src="../image/ikonreviews.png" alt="Reviews Icon" /><span
+                >Reviews</span
+              >
+            </li>
+            <li>
+              <img src="../image/ikonsurvey.png" alt="Survey Icon" /><span
+                >Survey</span
+              >
+            </li>
+            <li class="active">
+              <img
+                src="../image/ikonremindersH+3.png"
+                alt="Reminder H+3 Icon" /><span>Reminder H+3</span>
+            </li>
+            <li>
+              <img src="../image/ikonreminders.png" alt="Reminders Icon" /><span
+                >Reminders</span
+              >
+              <span style="color: green; font-weight: 600; margin-left: 4px"
+                >New</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="user-section">
+        <img src="../image/ikonuser.png" alt="User Icon" />
+        <div class="user-info">
+          <div class="name">Pitcar Service</div>
+          <div>User</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <h2>Dashboard Reminder H+3</h2>
+        <p class="subtext">Follow up pelanggan setelah 3 hari servis</p>
+      </div>
+
+      <div class="stats">
+        <div class="card">
+          <h3>Pending Reminder</h3>
+          <p>7 order</p>
+        </div>
+        <div class="card">
+          <h3>Total Reminder Sent</h3>
+          <p>3644 reminders</p>
+        </div>
+        <div class="card">
+          <h3>Feedback Received</h3>
+          <p>366 responses</p>
+        </div>
+        <div class="card">
+          <h3>Response Rate</h3>
+          <p>10.56%</p>
+        </div>
+      </div>
+
+      <!-- New Header Section -->
+      <div class="followup-header">Follow Up Hari Ini</div>
+
+      <div class="followup">
+        Sudah tidak ada reminder hari ini<br />
+        Semua pelanggan sudah dikirimkan
+      </div>
+
+      <div class="table-section">
+        <h3>Service History & Reminder Status</h3>
+        <div class="filters">
+          <div class="filter-group">
+            <label for="searchCustomer">Cari Pelanggan</label>
+            <input
+              type="text"
+              id="searchCustomer"
+              placeholder="Order/Customer atau Plat" />
           </div>
-
-          <nav class="menu">
-            <ul class="menu-list">
-              <li class="menu-item">
-                <svg viewBox="0 0 24 24" fill="#c1c1c1">
-                  <path
-                    d="M3 13h8V3H3v10zm0 8h8v-6H3v6zM13 21h8V11h-8v10zM13 3v6h8V3h-8z"
-                  />
-                </svg>
-                <span class="label">Dashboard</span>
-              </li>
-
-              <li class="menu-item">
-                <svg viewBox="0 0 24 24" fill="#c1c1c1">
-                  <path
-                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                  />
-                </svg>
-                <span class="label">Reviews</span>
-              </li>
-
-              <li class="menu-item active">
-                <svg viewBox="0 0 24 24" fill="#fff">
-                  <path
-                    d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6V10c0-3.07-1.63-5.64-4.5-6.32V3a1.5 1.5 0 0 0-3 0v.68C7.63 4.36 6 6.92 6 10v6l-2 2v1h16v-1l-2-2z"
-                  />
-                </svg>
-                <span class="label">Reminder H+3</span>
-              </li>
-
-              <li class="menu-item">
-                <svg viewBox="0 0 24 24" fill="#c1c1c1">
-                  <path
-                    d="M12 2L2 7l10 5 10-5-10-5zm0 7.3L6.1 7 12 4.7 17.9 7 12 9.3zM2 17l10 5 10-5v-4l-10 5-10-5v4z"
-                  />
-                </svg>
-                <span class="label">Reminders</span>
-                <span class="new-badge">New</span>
-              </li>
-            </ul>
-          </nav>
+          <div class="filter-group">
+            <label for="rangeTanggal">Range Tanggal</label>
+            <select id="rangeTanggal">
+              <option>Semua Waktu</option>
+              <option>Hari Ini</option>
+              <option>Minggu Ini</option>
+              <option>Tahun Ini</option>
+              <option>Custom Range</option>
+            </select>
+          </div>
+          <div class="custom-date-range" id="customDateRange">
+            <div class="filter-group">
+              <label for="tanggalAwal">Tanggal Awal</label>
+              <input type="date" id="tanggalAwal" />
+            </div>
+            <div class="filter-group">
+              <label for="tanggalAkhir">Tanggal Akhir</label>
+              <input type="date" id="tanggalAkhir" />
+            </div>
+          </div>
+          <div class="filter-group">
+            <label for="statusReminder">Status Reminder</label>
+            <select id="statusReminder">
+              <option>Semua Status</option>
+              <option>Belum Di Reminder</option>
+              <option>Sudah Direminder</option>
+              <option>Sudah Feedback</option>
+            </select>
+          </div>
         </div>
 
-        <div class="userbox">
-          <img src="https://i.ibb.co/4sM7Zdb/user-icon.png" alt="User" />
-          <div class="meta">
-            <div class="name">Pitcar Service</div>
-            <div>User</div>
-          </div>
-        </div>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main class="main">
-        <header class="header">
-          <h1>Dashboard Reminder H+3</h1>
-          <div class="sub">Follow up pelanggan setelah 3 hari servis</div>
-        </header>
-
-        <section class="stats">
-          <div class="stat">
-            <div class="title">Pending Reminder</div>
-            <div class="value">7 order</div>
-          </div>
-          <div class="stat">
-            <div class="title">Total Reminder Sent</div>
-            <div class="value">3644 reminders</div>
-          </div>
-          <div class="stat">
-            <div class="title">Feedback Received</div>
-            <div class="value">366 responses</div>
-          </div>
-          <div class="stat">
-            <div class="title">Response Rate</div>
-            <div class="value">10.56%</div>
-          </div>
-        </section>
-
-        <div class="follow">
-          <strong>Follow Up Hari Ini</strong>
-          <div class="small">
-            Sudah tidak ada reminder hari ini<br />Semua pelanggan sudah dikirimkan
-          </div>
-        </div>
-
-        <section class="card-panel">
-          <h3>Service History & Reminder Status</h3>
-          <table>
+        <div class="table-container">
+          <table id="reminderTable">
             <thead>
               <tr>
                 <th>Order No</th>
@@ -418,35 +482,327 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody id="tbody"></tbody>
+            <tbody id="tableBody">
+              <!-- Dummy data will be populated by JavaScript -->
+            </tbody>
           </table>
-        </section>
-      </main>
-    </div>
+        </div>
 
+        <div class="pagination">
+          <span>10 / Page</span>
+          <span>Showing 1-10 of 7291</span>
+          <button>First</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>Last</button>
+        </div>
+      </div>
+    </div>
     <script>
-      // Isi tabel contoh
-      const tbody = document.getElementById("tbody");
-      for (let i = 1; i <= 8; i++) {
-        tbody.innerHTML += `
-          <tr>
-            <td>S1715${i}</td>
-            <td>Pak Indra Setiawan</td>
-            <td>AA1568PR</td>
-            <td>Rizqo Rusli Erdiantoro</td>
-            <td>Belum Dikirim</td>
-            <td>Belum ada feedback</td>
-            <td><a class="send-btn" href="#">Kirim Reminder</a></td>
-          </tr>`;
+      // Dummy data with diverse statuses and dates
+      const dummyData = [
+        {
+          orderNo: "S17154",
+          customer: "Bu Wiwin Sutarmaji Sumbayak",
+          phone: "0819877777",
+          platNo: "AA1568PR",
+          serviceAdvisor: "Rizqo Rusli Erdiantoro",
+          statusReminder: "Belum Di Reminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-11-11",
+        },
+        {
+          orderNo: "S17155",
+          customer: "Bu Sari Dewi Ratna",
+          phone: "0823456789",
+          platNo: "B1234CD",
+          serviceAdvisor: "Ahmad Rahman",
+          statusReminder: "Sudah Direminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-11-11",
+        },
+        {
+          orderNo: "S17156",
+          customer: "Pak Budi Santoso",
+          phone: "0834567890",
+          platNo: "D5678EF",
+          serviceAdvisor: "Maya Sari",
+          statusReminder: "Sudah Feedback",
+          feedback: "Pelayanan bagus, terima kasih",
+          serviceDate: "2025-11-11",
+        },
+        {
+          orderNo: "S17157",
+          customer: "Ibu Rina Kartika",
+          phone: "0845678901",
+          platNo: "F9012GH",
+          serviceAdvisor: "Denny Kusuma",
+          statusReminder: "Belum Di Reminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-11-04",
+        },
+        {
+          orderNo: "S17158",
+          customer: "Pak Joko Widodo",
+          phone: "0856789012",
+          platNo: "H3456IJ",
+          serviceAdvisor: "Siti Nurhaliza",
+          statusReminder: "Sudah Direminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-11-05",
+        },
+        {
+          orderNo: "S17159",
+          customer: "Bu Maya Sari",
+          phone: "0867890123",
+          platNo: "J7890KL",
+          serviceAdvisor: "Rizqo Rusli Erdiantoro",
+          statusReminder: "Sudah Feedback",
+          feedback: "Servis cepat dan memuaskan",
+          serviceDate: "2025-11-06",
+        },
+        {
+          orderNo: "S17160",
+          customer: "Pak Ahmad Rahman",
+          phone: "0878901234",
+          platNo: "L1234MN",
+          serviceAdvisor: "Ahmad Rahman",
+          statusReminder: "Belum Di Reminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-11-01",
+        },
+        {
+          orderNo: "S17161",
+          customer: "Ibu Siti Nurhaliza",
+          phone: "0889012345",
+          platNo: "N5678OP",
+          serviceAdvisor: "Maya Sari",
+          statusReminder: "Sudah Direminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-11-08",
+        },
+        {
+          orderNo: "S17162",
+          customer: "Pak Denny Kusuma",
+          phone: "0890123456",
+          platNo: "P9012QR",
+          serviceAdvisor: "Denny Kusuma",
+          statusReminder: "Sudah Feedback",
+          feedback: "Mekanik sangat profesional",
+          serviceDate: "2025-11-09",
+        },
+        {
+          orderNo: "S17163",
+          customer: "Bu Linda Putri",
+          phone: "0811234567",
+          platNo: "R3456ST",
+          serviceAdvisor: "Siti Nurhaliza",
+          statusReminder: "Belum Di Reminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-11-10",
+        },
+        {
+          orderNo: "S17164",
+          customer: "Pak Eko Prasetyo",
+          phone: "0822345678",
+          platNo: "T7890UV",
+          serviceAdvisor: "Rizqo Rusli Erdiantoro",
+          statusReminder: "Sudah Direminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-10-15",
+        },
+        {
+          orderNo: "S17165",
+          customer: "Ibu Ani Suryani",
+          phone: "0833456789",
+          platNo: "V1234WX",
+          serviceAdvisor: "Ahmad Rahman",
+          statusReminder: "Sudah Feedback",
+          feedback: "Harga terjangkau dan kualitas baik",
+          serviceDate: "2025-10-20",
+        },
+        {
+          orderNo: "S17166",
+          customer: "Pak Hendro Wicaksono",
+          phone: "0844567890",
+          platNo: "X5678YZ",
+          serviceAdvisor: "Maya Sari",
+          statusReminder: "Belum Di Reminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-10-25",
+        },
+        {
+          orderNo: "S17167",
+          customer: "Bu Ratih Permata",
+          phone: "0855678901",
+          platNo: "Z9012AA",
+          serviceAdvisor: "Denny Kusuma",
+          statusReminder: "Sudah Direminder",
+          feedback: "Belum ada feedback",
+          serviceDate: "2025-09-15",
+        },
+        {
+          orderNo: "S17168",
+          customer: "Pak Yoga Pratama",
+          phone: "0866789012",
+          platNo: "AB3456CD",
+          serviceAdvisor: "Siti Nurhaliza",
+          statusReminder: "Sudah Feedback",
+          feedback: "Pelayanan sangat memuaskan",
+          serviceDate: "2025-09-20",
+        },
+      ];
+
+      let filteredData = [...dummyData];
+      let currentPage = 1;
+      const itemsPerPage = 10;
+
+      function renderTable(data, page = 1) {
+        const tbody = document.getElementById("tableBody");
+        tbody.innerHTML = "";
+
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const pageData = data.slice(startIndex, endIndex);
+
+        pageData.forEach((item) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${item.orderNo}</td>
+                    <td>${item.customer}<br /><small>${item.phone}</small></td>
+                    <td>${item.platNo}</td>
+                    <td>${item.serviceAdvisor}</td>
+                    <td style="text-align: left;"><span class="status-badge" style="text-align: left; display: inline-block;">${item.statusReminder}</span></td>
+                    <td>${item.feedback}</td>
+                    <td><a href="#">Kirim\nReminder</a></td>
+                `;
+          tbody.appendChild(row);
+        });
+
+        renderPagination(data.length, page);
       }
 
-      // Sidebar otomatis collapse / expand
-      const sidebar = document.querySelector(".sidebar");
-      sidebar.addEventListener("mouseleave", () => {
-        sidebar.classList.add("collapsed");
-      });
-      sidebar.addEventListener("mouseenter", () => {
-        sidebar.classList.remove("collapsed");
+      function renderPagination(totalItems, currentPage) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const paginationDiv = document.querySelector(".pagination");
+
+        let paginationHTML = `
+                <span>${itemsPerPage} / Page</span>
+                <span>Showing ${
+                  (currentPage - 1) * itemsPerPage + 1
+                }-${Math.min(
+          currentPage * itemsPerPage,
+          totalItems
+        )} of ${totalItems}</span>
+            `;
+
+        if (totalPages > 1) {
+          paginationHTML += '<button onclick="goToPage(1)">First</button>';
+
+          for (
+            let i = Math.max(1, currentPage - 2);
+            i <= Math.min(totalPages, currentPage + 2);
+            i++
+          ) {
+            paginationHTML += `<button class="${
+              i === currentPage ? "active" : ""
+            }" onclick="goToPage(${i})">${i}</button>`;
+          }
+
+          paginationHTML += `<button onclick="goToPage(${totalPages})">Last</button>`;
+        }
+
+        paginationDiv.innerHTML = paginationHTML;
+      }
+
+      function goToPage(page) {
+        currentPage = page;
+        renderTable(filteredData, currentPage);
+      }
+
+      function filterData() {
+        const searchTerm = document
+          .getElementById("searchCustomer")
+          .value.toLowerCase();
+        const statusFilter = document.getElementById("statusReminder").value;
+        const dateFilter = document.getElementById("rangeTanggal").value;
+        const startDate = document.getElementById("tanggalAwal").value;
+        const endDate = document.getElementById("tanggalAkhir").value;
+
+        filteredData = dummyData.filter((item) => {
+          // Search filter
+          const matchesSearch =
+            !searchTerm ||
+            item.orderNo.toLowerCase().includes(searchTerm) ||
+            item.customer.toLowerCase().includes(searchTerm) ||
+            item.platNo.toLowerCase().includes(searchTerm);
+
+          // Status filter
+          const matchesStatus =
+            statusFilter === "Semua Status" ||
+            item.statusReminder === statusFilter;
+
+          // Date filter
+          let matchesDate = true;
+          const serviceDate = new Date(item.serviceDate);
+          const today = new Date();
+
+          if (dateFilter === "Hari Ini") {
+            matchesDate = serviceDate.toDateString() === today.toDateString();
+          } else if (dateFilter === "Minggu Ini") {
+            const weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - today.getDay());
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+            matchesDate = serviceDate >= weekStart && serviceDate <= weekEnd;
+          } else if (dateFilter === "Tahun Ini") {
+            matchesDate = serviceDate.getFullYear() === today.getFullYear();
+          } else if (dateFilter === "Custom Range" && startDate && endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            matchesDate = serviceDate >= start && serviceDate <= end;
+          }
+
+          return matchesSearch && matchesStatus && matchesDate;
+        });
+
+        currentPage = 1; // Reset to first page when filtering
+        renderTable(filteredData, currentPage);
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize table
+        renderTable(dummyData, 1);
+
+        // Custom date range toggle
+        document
+          .getElementById("rangeTanggal")
+          .addEventListener("change", function () {
+            const customDateRange = document.getElementById("customDateRange");
+            if (this.value === "Custom Range") {
+              customDateRange.style.display = "flex";
+            } else {
+              customDateRange.style.display = "none";
+            }
+            filterData();
+          });
+
+        // Event listeners for filters
+        document
+          .getElementById("searchCustomer")
+          .addEventListener("input", filterData);
+        document
+          .getElementById("statusReminder")
+          .addEventListener("change", filterData);
+        document
+          .getElementById("tanggalAwal")
+          .addEventListener("change", filterData);
+        document
+          .getElementById("tanggalAkhir")
+          .addEventListener("change", filterData);
       });
     </script>
   </body>

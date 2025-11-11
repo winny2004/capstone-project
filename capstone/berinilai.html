@@ -423,7 +423,7 @@
   <div class="modal" id="ratingModal" aria-hidden="true" role="dialog">
     <div class="rating-content" role="document">
       <h2>Bagaimana Pengalaman Anda?</h2>
-      <p>Penilaian Anda sangat berarti bagi kami untuk terus meningkatkan kualitas pelayanan.</p>
+      <p style="font-size:14px;">Penilaian Anda sangat berarti bagi kami untuk terus meningkatkan kualitas pelayanan.</p>
 
       <!-- Fasilitas -->
       <div class="rating-section">
@@ -497,9 +497,9 @@
       <!-- Ceritakan Pengalaman -->
       <div class="rating-section">
         <br><h3>Ceritakan Pengalaman Anda</h3>
-        <p>Bagikan pengalaman detail anda selama proses servis. Hal Ini akan membantu kami dan pelanggan yang lain</p>
+        <p style="font-size:13px;">Bagikan pengalaman detail anda selama proses servis. Hal Ini akan membantu kami dan pelanggan yang lain</p>
         <textarea id="feedback" placeholder="Contoh: Pelayanan dangat ramah dan profesional. Ruang tunggu nyaman dengan fasilitas lengkap. Harga sesuai dengan kualitas serta pelayanna yang diberikan" rows="4"></textarea>
-        <p>*Penilaian anda akan membantu meningkatkan kualitas layanan kami dan menjadi referensi bagi pelanggan lainnya</p>
+        <p style="font-size:13px;">*Penilaian anda akan membantu meningkatkan kualitas layanan kami dan menjadi referensi bagi pelanggan lainnya</p>
       </div>
 
       <button id="submitRating"><strong>Kirim Penilaian</strong></button>
@@ -575,10 +575,7 @@
       const feedback = feedbackEl.value.trim();
       let summary = 'Terima kasih atas penilaian Anda!\n\n';
       if (anyRated) {
-        summary += 'Rating:\n';
-        for (const [cat, val] of Object.entries(ratings)) {
-          summary += `• ${cat}: ${val} ⭐\n`;
-        }
+        window.location.href = 'selesisurvei.html';
       } else {
         summary += 'Anda belum memberikan rating pada kategori manapun.\n';
       }
