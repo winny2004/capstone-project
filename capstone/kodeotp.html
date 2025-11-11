@@ -163,7 +163,7 @@
   </div>
 
   <script>
-    // Autofokus ke input berikutnya setelah isi angka
+    // Autofokus ke input berikutnya
     const inputs = document.querySelectorAll('.otp-inputs input');
     inputs.forEach((input, index) => {
       input.addEventListener('input', () => {
@@ -173,8 +173,19 @@
       });
     });
 
+    // Validasi OTP dan arahkan ke halaman sukses/gagal
     document.getElementById('kirimOtpBtn').addEventListener('click', () => {
-      alert('Kode OTP berhasil dikirim!');
+      let otp = '';
+      inputs.forEach(input => otp += input.value);
+      
+      // Misal OTP benar = "123456"
+      const otpBenar = "123456";
+
+      if (otp === otpBenar) {
+        window.location.href = "berhasilotp.html";
+      } else {
+        window.location.href = "gagalotp.html";
+      }
     });
   </script>
 </body>
