@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Pitcar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 50px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            z-index: 1000;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.expanded {
+            width: 220px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            height: 55px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            margin-right: 10px;
+            margin-left: -3px;
+        }
+
+        .logo-text {
+            margin-left: 2px;
+            height: 28px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .menu {
+            padding-top: 8px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 55px);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 13px 12px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background: #f5f5f5;
+            color: #d32f2f;
+        }
+
+        .menu-item.active {
+            background: #d32f2f;
+            color: white;
+            padding: 8px;
+            border-radius: 12px;
+            margin: 4px;
+        }
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            object-fit: contain;
+            display: block;
+            margin-left: 3px;
+        }
+
+        .menu-item.active .menu-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        .menu-user .menu-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-user .main-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .menu-user .sub-text {
+            font-size: 10px;
+            color: #888888;
+        }
+
+        .menu-user {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .menu-text {
+            margin-left: 18px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .new-badge {
+            margin-left: 20px;
+            background-color: #d4f5d4;
+            color: #28a745;
+            font-size: 0.7rem;
+            font-weight: 400;
+            padding: 5px 10px;
+            border-radius: 10px;
+            line-height: 1;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .main-content {
+            margin-left: 50px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 220px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            padding: 25px;
+            background: rgb(255, 255, 255);
+            border-radius: 8px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .header-left h1 {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .header-left p {
+            color: #686868;
+            font-size: 12px;
+        }
+
+        .header-right select {
+            padding: 6px 25px 6px 10px;
+            border: 1px solid #a2a2a2;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #474747;
+            background: white;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+        }
+
+        .header-right select:focus {
+            outline: none;
+            border: 2px solid rgb(176, 23, 23);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgb(245, 245, 245);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #f0f0f0;
+        }
+
+        .stat-label {
+            color: #747474;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 500;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            color: #333;
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1;
+            margin-left: 10px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .star {
+            color: #FFD700;
+            font-size: 18px;
+            margin-left: 6px;
+        }
+
+        .stat-subtitle {
+            color: #919191;
+            font-size: 10px;
+            margin-top: 3px;
+            margin-left: 10px;
+        }
+
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .chart-card {
+            background: rgb(245, 245, 245);
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #f0f0f0;
+        }
+
+        .chart-title {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 220px;
+        }
+
+        canvas {
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="../image/logopitcar.png" alt="Logo" class="logo-icon">
+            <img src="../image/pitcar.png" alt="PITCAR" class="logo-text">
+        </div>
+        
+        <div class="menu">
+            <a href="dashboard.html" class="menu-item active">
+                <img src="../image/ikonhome.png" alt="Dashboard" class="menu-icon">
+                <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="reviews.html" class="menu-item">
+                <img src="../image/ikonreviews.png" alt="Reviews" class="menu-icon">
+                <span class="menu-text">Reviews</span>
+            </a>
+            <a href="survey.html" class="menu-item">
+                <img src="../image/ikonsurvey.png" alt="Survey" class="menu-icon">
+                <span class="menu-text">Survey</span>
+            </a>
+            <a href="reminders_H+3.html" class="menu-item">
+                <img src="../image/ikonremindersH+3.png" alt="Reminder" class="menu-icon">
+                <span class="menu-text">Reminder H+3</span>
+            </a>
+            <a href="reminders.html" class="menu-item">
+                <img src="../image/ikonreminders.png" alt="Reminders" class="menu-icon">
+                <span class="menu-text">
+                    Reminders
+                    <span class="new-badge">New</span>
+                </span>
+            </a>
+            <a href="#" class="menu-item menu-user">
+                <img src="../image/ikonuser.png" alt="User" class="menu-icon">
+                <span class="menu-text">
+                    <span class="main-text">Pitcar Service</span>
+                    <span class="sub-text">User</span>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="dashboard">
+            <div class="header">
+                <div class="header-left">
+                    <h1>Dashboard Review</h1>
+                    <p>Analisis feedback pelanggan</p>
+                </div>
+                <div class="header-right">
+                    <select>
+                        <option>Hari Ini</option>
+                        <option>Minggu Ini</option>
+                        <option>Bulan Ini</option>
+                        <option>Tahun Ini</option>
+                        <option>Pilih Tanggal</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-label">Total Servis</div>
+                    <div class="stat-value">7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Review</div>
+                    <div class="stat-value">2</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Rate Review</div>
+                    <div class="stat-value">28.57%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Rating Rate-rate</div>
+                    <div class="stat-value">
+                        5
+                        <span class="star">★</span>
+                    </div>
+                    <div class="stat-subtitle">dari 5 feedback</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Rating H+3</div>
+                    <div class="stat-value">
+                        0.0
+                        <span class="star">★</span>
+                    </div>
+                    <div class="stat-subtitle">dari 0 feedback</div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-title">Distribusi Rating Keseluruhan</div>
+                    <div class="chart-container">
+                        <canvas id="chart1"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Rating per Kategori</div>
+                    <div class="chart-container">
+                        <canvas id="radar1"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-title">Distribusi Rating Fasilitas</div>
+                    <div class="chart-container">
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Rating per Kategori Fasilitas</div>
+                    <div class="chart-container">
+                        <canvas id="radar2"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-title">Distribusi Rating Layanan</div>
+                    <div class="chart-container">
+                        <canvas id="chart3"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Rating per Kategori Layanan</div>
+                    <div class="chart-container">
+                        <canvas id="radar3"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Sidebar saat diklik
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        
+        // Desktop hover otomatis
+        sidebar.addEventListener('pointerenter', () => {
+            sidebar.classList.add('expanded');
+            mainContent.classList.add('expanded');
+        });
+
+        sidebar.addEventListener('pointerleave', () => {
+            sidebar.classList.remove('expanded');
+            mainContent.classList.remove('expanded');
+        });
+
+        // Bar Chart Configuration
+        const barConfig = (data) => ({
+            type: 'bar',
+            data: {
+                labels: ['1', '2', '3', '4', '5'],
+                datasets: [{
+                    data: data,
+                    backgroundColor: '#c62828',
+                    barThickness: 60
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            stepSize: 2,
+                            font: { size: 10 }
+                        },
+                        grid: {
+                            color: '#f0f0f0'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 11 }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Radar Chart Configuration
+        const radarConfig = (labels, data) => ({
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: 'rgba(198, 40, 40, 0.1)',
+                    borderColor: '#c62828',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#c62828',
+                    pointBorderColor: '#fff',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: {
+                            stepSize: 1,
+                            font: { size: 9 }
+                        },
+                        pointLabels: {
+                            font: { size: 10 }
+                        },
+                        grid: {
+                            color: '#e0e0e0'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Create Charts
+        new Chart(document.getElementById('chart1'), barConfig([0, 0, 0, 1, 10]));
+        new Chart(document.getElementById('chart2'), barConfig([0, 0, 1, 1, 9]));
+        new Chart(document.getElementById('chart3'), barConfig([0, 0, 0, 2, 8]));
+        
+        new Chart(document.getElementById('radar1'), radarConfig(
+            ['Pelayanan', 'Harga', 'Fasilitas', 'Rating H+3'],
+            [5, 4.5, 5, 4.8]
+        ));
+        
+        new Chart(document.getElementById('radar2'), radarConfig(
+            ['Ruang Tunggu', 'Musholah', 'Kamar Mandi', 'Makanan dan Minuman', 'Parkiran Mobil'],
+            [5, 5, 4.7, 4.5, 5]
+        ));
+        
+        new Chart(document.getElementById('radar3'), radarConfig(
+            ['Pelayanan Staf', 'Hasil & Kualitas Servis', 'Garansi', 'Booking Online'],
+            [5, 4.8, 5, 4.9]
+        ));
+    </script>
+</body>
+</html>
