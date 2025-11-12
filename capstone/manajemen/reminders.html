@@ -9,7 +9,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
     <style>
-   
       * {
         margin: 0;
         padding: 0;
@@ -119,8 +118,8 @@
           background-color: #fbeaea;
           color: #c20000;
           font-weight: 600;
-          border-left: 5px solid #c20000; /* Garis merah aktif */
-          padding-left: 19px; /* Kompensasi padding */
+          border-left: 5px solid #c20000;
+          padding-left: 19px;
       }
       
       .menu li:hover:not(.active) {
@@ -132,7 +131,7 @@
       .menu li .badge-reminder {
           position: absolute;
           right: 20px;
-          background-color: #28a745; /* Hijau 'NEW' */
+          background-color: #28a745;
           color: white;
           padding: 2px 6px;
           border-radius: 10px;
@@ -167,9 +166,7 @@
         border-radius: 50%;
       }
       
-      /* ==================================== */
-      /* MAIN CONTENT STYLES (Disesuaikan untuk Jangka Panjang) */
-      /* ==================================== */
+    
       .main {
         flex: 1;
         padding: 25px 35px;
@@ -235,7 +232,7 @@
           text-transform: uppercase;
       }
       
-      /* Warna Kartu Statistik (Sesuai Gambar Jangka Panjang) */
+      /* Warna Kartu Statistik */
       .card.stat-blue { background-color: #007bff; }
       .card.stat-red { background-color: #dc3545; }
       .card.stat-green { background-color: #28a745; }
@@ -266,17 +263,128 @@
           gap: 10px;
           margin-bottom: 15px;
           flex-wrap: wrap;
+          align-items: flex-end; /* Align items to the bottom for labels */
       }
       
-      .filter-controls select, .filter-controls input {
+      .filter-group {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          min-width: 120px;
+          flex-grow: 1;
+      }
+      
+      .filter-group label {
+          font-size: 12px;
+          color: #666;
+          margin-bottom: 4px;
+          font-weight: 500;
+      }
+
+      /* CUSTOM DROPDOWN STYLES */
+      .custom-dropdown-wrapper {
+          position: relative;
+          display: inline-block;
+          width: 100%;
+      }
+      
+      .custom-dropdown-display {
+          background-color: white;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 8px 10px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 14px;
+          color: #333;
+          min-height: 38px; /* Standard height for inputs/selects */
+      }
+
+      .custom-dropdown-display i {
+          margin-right: 8px;
+          color: #666;
+      }
+
+      .custom-dropdown-display .arrow-down {
+          margin-left: auto;
+          margin-right: 0;
+          color: #666;
+          transition: transform 0.2s;
+      }
+      
+      .custom-dropdown-display.active .arrow-down {
+          transform: rotate(180deg);
+      }
+      
+      .custom-dropdown-options {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ddd;
+          border-top: none;
+          border-radius: 0 0 4px 4px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 20;
+          max-height: 200px;
+          overflow-y: auto;
+          display: none; /* Hidden by default */
+      }
+
+      .custom-dropdown-options.show {
+          display: block;
+      }
+      
+      .custom-dropdown-item {
+          padding: 10px 15px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          color: #333;
+      }
+      
+      .custom-dropdown-item i {
+          margin-right: 10px;
+          color: #007bff; /* Warna ikon default */
+      }
+
+      .custom-dropdown-item:hover,
+      .custom-dropdown-item.selected {
+          background-color: #e9f5ff; /* Lighter blue for hover/selected */
+          color: #007bff;
+      }
+
+      /* Specific icon colors if needed */
+      .custom-dropdown-item .fa-hourglass-half { color: #8e44ad; } /* Ungu untuk Belum Diremind */
+      .custom-dropdown-item .fa-check-circle { color: #28a745; } /* Hijau untuk Sudah Dikirim */
+      .custom-dropdown-item .fa-comments { color: #6f42c1; } /* Ungu gelap untuk Ada Respon */
+      .custom-dropdown-item .fa-bullseye { color: #dc3545; } /* Merah untuk Terbooking */
+
+      .custom-dropdown-item .fa-exclamation-triangle.red { color: #dc3545; } /* Merah untuk Sangat Mendesak */
+      .custom-dropdown-item .fa-exclamation-triangle.orange { color: #ffc107; } /* Oranye untuk Mendesak */
+      .custom-dropdown-item .fa-clock { color: #ff8c00; } /* Oranye lebih terang untuk Segera */
+      .custom-dropdown-item .fa-check-square { color: #28a745; } /* Hijau untuk Normal */
+
+      .custom-date-range {
+          display: none; /* Hidden by default, shown by JS */
+          gap: 10px;
+          flex-grow: 2; /* Allows it to take more space if visible */
+      }
+      
+      .filter-controls input[type="search"] {
           padding: 8px 10px;
           border: 1px solid #ddd;
           border-radius: 4px;
-          flex-grow: 1;
-          min-width: 120px;
+          flex-grow: 2;
+          min-width: 150px;
           font-size: 14px;
+          min-height: 38px;
       }
-      
+
       .tab-filters-top button {
           padding: 8px 15px;
           border: 1px solid #ddd;
@@ -322,7 +430,7 @@
       }
       
       .reminder-tabs button.tab-active {
-          border-bottom: 2px solid #dc3545; /* Merah untuk tab aktif */
+          border-bottom: 2px solid #dc3545;
           color: #dc3545;
       }
       
@@ -342,12 +450,12 @@
       
       /* Styling untuk Kartu Reminder Merah */
       .reminder-card {
-          background-color: #fceaea; /* Merah muda */
-          border-left: 5px solid #dc3545; /* Garis merah tebal */
+          background-color: #fceaea;
+          border-left: 5px solid #dc3545;
           padding: 15px;
           border-radius: 6px;
           position: relative;
-          color: #333; /* Default text color inside card */
+          color: #333;
       }
       
       .reminder-card-header {
@@ -409,22 +517,22 @@
     <div class="sidebar">
         <div>
             <div class="logo">
-                <img src="../image/pitcar.png" alt="Pitcar Logo" class="full-logo" />
-                <img src="../image/logopitcar.png" alt="Pitcar Small Logo" class="small-logo" />
+                <img src="https://via.placeholder.com/150x30/FF0000/FFFFFF?text=PITCAR" alt="Pitcar Logo" class="full-logo" />
+                <img src="https://via.placeholder.com/40/FF0000/FFFFFF?text=P" alt="Pitcar Small Logo" class="small-logo" />
             </div>
             <div class="menu">
                 <ul>
-                    <li><img src="../image/ikonhome.png" alt="Dashboard Icon" /><span>Dashboard</span></li>
-                    <li><img src="../image/ikonreviews.png" alt="Reviews Icon" /><span>Reviews</span></li>
-                    <li><img src="../image/ikonsurvey.png" alt="Survey Icon" /><span>Survey</span></li>
-                    <li><img src="../image/ikonremindersH+3.png" alt="Reminder H+3 Icon" /><span>Reminder H+3</span></li>
-                    <li class="active"><img src="../image/ikonreminders.png" alt="Reminders Icon" /><span>Reminders</span><span class="badge-reminder">New</span></li>
+                    <li><img src="https://via.placeholder.com/24/CCCCCC/000000?text=H" alt="Dashboard Icon" /><span>Dashboard</span></li>
+                    <li><img src="https://via.placeholder.com/24/CCCCCC/000000?text=R" alt="Reviews Icon" /><span>Reviews</span></li>
+                    <li><img src="https://via.placeholder.com/24/CCCCCC/000000?text=S" alt="Survey Icon" /><span>Survey</span></li>
+                    <li><img src="https://via.placeholder.com/24/CCCCCC/000000?text=H" alt="Reminder H+3 Icon" /><span>Reminder H+3</span></li>
+                    <li class="active"><img src="https://via.placeholder.com/24/C20000/FFFFFF?text=Rm" alt="Reminders Icon" /><span>Reminders</span><span class="badge-reminder">New</span></li>
                 </ul>
             </div>
         </div>
 
         <div class="user-section">
-            <img src="../image/ikonuser.png" alt="User Icon" />
+            <img src="https://via.placeholder.com/35/CCCCCC/000000?text=U" alt="User Icon" />
             <div class="user-info">
                 <div class="name">Pitcar Service</div>
                 <div>User</div>
@@ -470,11 +578,69 @@
             <p>Gunakan fitur filter untuk mencari data yang spesifik.</p>
             
             <div class="filter-controls">
-                <select><option>Jenis Reminder</option></select>
-                <select><option>Status</option></select>
-                <select><option>Tingkat urgensi</option></select>
-                <select><option>Rentang tanggal</option></select>
-                <select><option>Semua Waktu</option></select>
+                <div class="filter-group">
+                    <label>Jenis Reminder</label>
+                    <div class="custom-dropdown-wrapper">
+                        <div class="custom-dropdown-display" data-value="Semua Reminder">
+                            <i class="fas fa-redo-alt"></i> Semua Reminder <i class="fas fa-chevron-down arrow-down"></i>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <div class="custom-dropdown-item selected" data-value="Semua Reminder"><i class="fas fa-redo-alt"></i> Semua Reminder</div>
+                            <div class="custom-dropdown-item" data-value="3 Bulan"><i class="fas fa-calendar-alt"></i> 3 Bulan</div>
+                            <div class="custom-dropdown-item" data-value="6 Bulan"><i class="fas fa-calendar-alt"></i> 6 Bulan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Status</label>
+                    <div class="custom-dropdown-wrapper">
+                        <div class="custom-dropdown-display" data-value="Semua Status">
+                            <i class="fas fa-clipboard-list"></i> Semua Status <i class="fas fa-chevron-down arrow-down"></i>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <div class="custom-dropdown-item selected" data-value="Semua Status"><i class="fas fa-clipboard-list"></i> Semua Status</div>
+                            <div class="custom-dropdown-item" data-value="Belum Diremind"><i class="fas fa-hourglass-half"></i> Belum Diremind</div>
+                            <div class="custom-dropdown-item" data-value="Sudah Dikirim"><i class="fas fa-check-circle"></i> Sudah Dikirim</div>
+                            <div class="custom-dropdown-item" data-value="Ada Respon"><i class="fas fa-comments"></i> Ada Respon</div>
+                            <div class="custom-dropdown-item" data-value="Terbooking"><i class="fas fa-bullseye"></i> Terbooking</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Tingkat Urgensi</label>
+                    <div class="custom-dropdown-wrapper">
+                        <div class="custom-dropdown-display" data-value="Semua">
+                            <i class="fas fa-redo-alt"></i> Semua <i class="fas fa-chevron-down arrow-down"></i>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <div class="custom-dropdown-item selected" data-value="Semua"><i class="fas fa-redo-alt"></i> Semua</div>
+                            <div class="custom-dropdown-item" data-value="Sangat Mendesak"><i class="fas fa-exclamation-triangle red"></i> Sangat Mendesak</div>
+                            <div class="custom-dropdown-item" data-value="Mendesak"><i class="fas fa-exclamation-triangle orange"></i> Mendesak</div>
+                            <div class="custom-dropdown-item" data-value="Segera"><i class="fas fa-clock"></i> Segera</div>
+                            <div class="custom-dropdown-item" data-value="Normal"><i class="fas fa-check-square"></i> Normal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Rentang Tanggal</label>
+                    <div class="custom-dropdown-wrapper">
+                        <div class="custom-dropdown-display" data-value="Semua Waktu">
+                            <i class="fas fa-calendar-alt"></i> Semua Waktu <i class="fas fa-chevron-down arrow-down"></i>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <div class="custom-dropdown-item selected" data-value="Semua Waktu"><i class="fas fa-calendar-alt"></i> Semua Waktu</div>
+                            <div class="custom-dropdown-item" data-value="Hari Ini"><i class="fas fa-map-marker-alt"></i> Hari Ini</div>
+                            <div class="custom-dropdown-item" data-value="Minggu Ini"><i class="fas fa-calendar-week"></i> Minggu Ini</div>
+                            <div class="custom-dropdown-item" data-value="Bulan Ini"><i class="fas fa-chart-bar"></i> Bulan Ini</div>
+                            <div class="custom-dropdown-item" data-value="Tahun Ini"><i class="fas fa-chart-line"></i> Tahun Ini</div>
+                            <div class="custom-dropdown-item" data-value="Rentang Khusus"><i class="fas fa-bullseye"></i> Rentang Khusus</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <input type="search" placeholder="Cari berdasarkan">
             </div>
             
@@ -549,12 +715,60 @@
         </section>
     </div>
     <script>
-        // ====================================
-        // JAVASCRIPT UNTUK INTERAKSI TOMBOL & SIDEBAR
-        // ====================================
         document.addEventListener("DOMContentLoaded", function () {
+            const dropdownWrappers = document.querySelectorAll('.custom-dropdown-wrapper');
+
+            dropdownWrappers.forEach(wrapper => {
+                const display = wrapper.querySelector('.custom-dropdown-display');
+                const options = wrapper.querySelector('.custom-dropdown-options');
+
+                display.addEventListener('click', () => {
+                    // Close other open dropdowns
+                    document.querySelectorAll('.custom-dropdown-options.show').forEach(openOptions => {
+                        if (openOptions !== options) {
+                            openOptions.classList.remove('show');
+                            openOptions.previousElementSibling.classList.remove('active');
+                        }
+                    });
+                    options.classList.toggle('show');
+                    display.classList.toggle('active');
+                });
+
+                options.querySelectorAll('.custom-dropdown-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        // Update display text and icon
+                        display.innerHTML = item.innerHTML + ' <i class="fas fa-chevron-down arrow-down"></i>';
+                        display.dataset.value = item.dataset.value;
+
+                        // Update active state for items
+                        options.querySelectorAll('.custom-dropdown-item').forEach(opt => opt.classList.remove('selected'));
+                        item.classList.add('selected');
+
+                        options.classList.remove('show');
+                        display.classList.remove('active');
+                        
+                        // Trigger a custom change event if needed for filtering
+                        const event = new Event('change', { bubbles: true });
+                        display.dispatchEvent(event);
+                    });
+                });
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('.custom-dropdown-wrapper')) {
+                    document.querySelectorAll('.custom-dropdown-options.show').forEach(options => {
+                        options.classList.remove('show');
+                        options.previousElementSibling.classList.remove('active');
+                    });
+                }
+            });
+
+            // ====================================
+            // OTHER JAVASCRIPT LOGIC
+            // ====================================
             
-            // Logika untuk Tombol Filter Bawah di Filter Section (Semua Reminder, 3 Bulan, 6 Bulan)
+            // Logika untuk Tombol Filter Bawah di Filter Section
             const filterButtons = document.querySelectorAll('.tab-filters-top .filter-btn');
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -574,7 +788,7 @@
                 });
             });
 
-            // Logika Hover Sidebar (Dipertahankan dari kode sebelumnya)
+            // Logika Hover Sidebar
             const sidebar = document.querySelector('.sidebar');
             const menuItems = document.querySelectorAll('.menu li');
             const userSectionInfo = document.querySelector('.user-section .user-info');
