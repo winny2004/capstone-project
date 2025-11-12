@@ -319,9 +319,20 @@
       .pagination {
         margin-top: 10px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
         font-size: 13px;
+      }
+
+      .pagination-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .pagination-right {
+        display: flex;
+        align-items: center;
         gap: 10px;
       }
 
@@ -472,6 +483,18 @@
           </div>
         </div>
 
+        <div
+          id="errorMessage"
+          style="
+            display: none;
+            color: red;
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+          ">
+          Failed to fetch history data<br />Try Again
+        </div>
+
         <div class="table-container">
           <table id="reminderTable">
             <thead>
@@ -492,15 +515,24 @@
         </div>
 
         <div class="pagination">
-          <span>10 / Page</span>
-          <span>Showing 1-10 of 7291</span>
-          <button>First</button>
-          <button class="active">1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>Last</button>
+          <div class="pagination-left">
+            <select id="itemsPerPage">
+              <option value="10">10 / Page</option>
+              <option value="25">25 / Page</option>
+              <option value="50">50 / Page</option>
+              <option value="100">100 / Page</option>
+            </select>
+            <span id="showingInfo">Showing 1-10 of 7291</span>
+          </div>
+          <div class="pagination-right">
+            <button>First</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+            <button>Last</button>
+          </div>
         </div>
       </div>
     </div>
@@ -524,8 +556,13 @@
           platNo: "B1234CD",
           serviceAdvisor: "Ahmad Rahman",
           statusReminder: "Sudah Direminder",
-          feedback: "Belum ada feedback",
+          feedback: {
+            rating: 3,
+            message: "Pelayanan cukup baik, tapi bisa lebih cepat",
+            date: "2025-11-11",
+          },
           serviceDate: "2025-11-11",
+          sentDateTime: "2025-11-10 14:30",
         },
         {
           orderNo: "S17156",
@@ -534,7 +571,11 @@
           platNo: "D5678EF",
           serviceAdvisor: "Maya Sari",
           statusReminder: "Sudah Feedback",
-          feedback: "Pelayanan bagus, terima kasih",
+          feedback: {
+            rating: 4,
+            message: "Pelayanan bagus, terima kasih",
+            date: "2025-11-11 15:30",
+          },
           serviceDate: "2025-11-11",
         },
         {
@@ -554,8 +595,13 @@
           platNo: "H3456IJ",
           serviceAdvisor: "Siti Nurhaliza",
           statusReminder: "Sudah Direminder",
-          feedback: "Belum ada feedback",
+          feedback: {
+            rating: 2,
+            message: "Harga terlalu mahal untuk servis sekedar ganti oli",
+            date: "2025-11-05",
+          },
           serviceDate: "2025-11-05",
+          sentDateTime: "2025-11-04 09:15",
         },
         {
           orderNo: "S17159",
@@ -564,7 +610,11 @@
           platNo: "J7890KL",
           serviceAdvisor: "Rizqo Rusli Erdiantoro",
           statusReminder: "Sudah Feedback",
-          feedback: "Servis cepat dan memuaskan",
+          feedback: {
+            rating: 5,
+            message: "Servis cepat dan memuaskan",
+            date: "2025-11-06 10:45",
+          },
           serviceDate: "2025-11-06",
         },
         {
@@ -584,8 +634,13 @@
           platNo: "N5678OP",
           serviceAdvisor: "Maya Sari",
           statusReminder: "Sudah Direminder",
-          feedback: "Belum ada feedback",
+          feedback: {
+            rating: 4,
+            message: "Staf ramah dan profesional",
+            date: "2025-11-08",
+          },
           serviceDate: "2025-11-08",
+          sentDateTime: "2025-11-07 16:45",
         },
         {
           orderNo: "S17162",
@@ -594,7 +649,11 @@
           platNo: "P9012QR",
           serviceAdvisor: "Denny Kusuma",
           statusReminder: "Sudah Feedback",
-          feedback: "Mekanik sangat profesional",
+          feedback: {
+            rating: 5,
+            message: "Mekanik sangat profesional",
+            date: "2025-11-09 14:20",
+          },
           serviceDate: "2025-11-09",
         },
         {
@@ -614,8 +673,13 @@
           platNo: "T7890UV",
           serviceAdvisor: "Rizqo Rusli Erdiantoro",
           statusReminder: "Sudah Direminder",
-          feedback: "Belum ada feedback",
+          feedback: {
+            rating: 3,
+            message: "Servis baik, tapi antrian cukup lama",
+            date: "2025-10-15",
+          },
           serviceDate: "2025-10-15",
+          sentDateTime: "2025-10-14 11:20",
         },
         {
           orderNo: "S17165",
@@ -624,7 +688,11 @@
           platNo: "V1234WX",
           serviceAdvisor: "Ahmad Rahman",
           statusReminder: "Sudah Feedback",
-          feedback: "Harga terjangkau dan kualitas baik",
+          feedback: {
+            rating: 4,
+            message: "Harga terjangkau dan kualitas baik",
+            date: "2025-10-20 12:10",
+          },
           serviceDate: "2025-10-20",
         },
         {
@@ -644,8 +712,13 @@
           platNo: "Z9012AA",
           serviceAdvisor: "Denny Kusuma",
           statusReminder: "Sudah Direminder",
-          feedback: "Belum ada feedback",
+          feedback: {
+            rating: 3,
+            message: "Pelayanan standar, tidak ada masalah",
+            date: "2025-09-15",
+          },
           serviceDate: "2025-09-15",
+          sentDateTime: "2025-09-14 13:00",
         },
         {
           orderNo: "S17168",
@@ -654,14 +727,18 @@
           platNo: "AB3456CD",
           serviceAdvisor: "Siti Nurhaliza",
           statusReminder: "Sudah Feedback",
-          feedback: "Pelayanan sangat memuaskan",
+          feedback: {
+            rating: 5,
+            message: "Pelayanan sangat memuaskan",
+            date: "2025-09-20 16:55",
+          },
           serviceDate: "2025-09-20",
         },
       ];
 
       let filteredData = [...dummyData];
       let currentPage = 1;
-      const itemsPerPage = 10;
+      let itemsPerPage = 10;
 
       function renderTable(data, page = 1) {
         const tbody = document.getElementById("tableBody");
@@ -672,15 +749,43 @@
         const pageData = data.slice(startIndex, endIndex);
 
         pageData.forEach((item) => {
+          let actionText = "Kirim\nReminder";
+          let statusDisplay = item.statusReminder;
+
+          if (item.statusReminder === "Sudah Direminder") {
+            actionText = "Kirim\nUlang";
+            const [date, time] = item.sentDateTime.split(" ");
+            statusDisplay = `<span style="background-color: #FFF7DC; padding: 4px 8px; border-radius: 4px; margin-bottom: 4px; display: inline-block;">${item.statusReminder}</span><br><small style="background: none; padding: 0;">${date}<br>${time}</small>`;
+          } else if (item.statusReminder === "Sudah Feedback") {
+            actionText = "";
+            const [date, time] = item.feedback.date.split(" ");
+            statusDisplay = `<span style="background-color: #D0F9CE; padding: 4px 8px; border-radius: 4px; margin-bottom: 4px; display: inline-block;">${
+              item.statusReminder
+            }</span><br><small style="background: none; padding: 0;">${date}<br>${
+              time || ""
+            }</small>`;
+          } else {
+            statusDisplay = `<span style="background-color: #f5f5f5; padding: 4px 8px; border-radius: 4px; display: inline-block;">${item.statusReminder}</span>`;
+          }
+
+          let feedbackDisplay = item.feedback;
+          if (typeof item.feedback === "object" && item.feedback.rating) {
+            const filledStars = "★".repeat(item.feedback.rating);
+            const emptyStars = "☆".repeat(5 - item.feedback.rating);
+            feedbackDisplay = `<div><span style="color: #FFDE63;">${filledStars}</span>${emptyStars} (${item.feedback.rating}/5)</div><div>${item.feedback.message}</div><small style="font-size: 11px; color: #666;">${item.feedback.date}</small>`;
+          }
+
           const row = document.createElement("tr");
           row.innerHTML = `
                     <td>${item.orderNo}</td>
                     <td>${item.customer}<br /><small>${item.phone}</small></td>
                     <td>${item.platNo}</td>
                     <td>${item.serviceAdvisor}</td>
-                    <td style="text-align: left;"><span class="status-badge" style="text-align: left; display: inline-block;">${item.statusReminder}</span></td>
-                    <td>${item.feedback}</td>
-                    <td><a href="#">Kirim\nReminder</a></td>
+                    <td style="text-align: left;">${statusDisplay}</td>
+                    <td>${feedbackDisplay}</td>
+                    <td>${
+                      actionText ? '<a href="#">' + actionText + "</a>" : ""
+                    }</td>
                 `;
           tbody.appendChild(row);
         });
@@ -693,16 +798,25 @@
         const paginationDiv = document.querySelector(".pagination");
 
         let paginationHTML = `
-                <span>${itemsPerPage} / Page</span>
-                <span>Showing ${
-                  (currentPage - 1) * itemsPerPage + 1
-                }-${Math.min(
-          currentPage * itemsPerPage,
-          totalItems
-        )} of ${totalItems}</span>
+                <div class="pagination-left">
+                  <select id="itemsPerPage">
+                    <option value="10" ${itemsPerPage === 10 ? 'selected' : ''}>10 / Page</option>
+                    <option value="25" ${itemsPerPage === 25 ? 'selected' : ''}>25 / Page</option>
+                    <option value="50" ${itemsPerPage === 50 ? 'selected' : ''}>50 / Page</option>
+                    <option value="100" ${itemsPerPage === 100 ? 'selected' : ''}>100 / Page</option>
+                  </select>
+                  <span id="showingInfo">Showing ${
+                    (currentPage - 1) * itemsPerPage + 1
+                  }-${Math.min(
+            currentPage * itemsPerPage,
+            totalItems
+          )} of ${totalItems}</span>
+                </div>
             `;
 
         if (totalPages > 1) {
+          paginationHTML += '<div class="pagination-right">';
+
           paginationHTML += '<button onclick="goToPage(1)">First</button>';
 
           for (
@@ -716,6 +830,10 @@
           }
 
           paginationHTML += `<button onclick="goToPage(${totalPages})">Last</button>`;
+
+          paginationHTML += '</div>';
+        } else {
+          paginationHTML += '<div class="pagination-right"></div>';
         }
 
         paginationDiv.innerHTML = paginationHTML;
@@ -763,10 +881,20 @@
             matchesDate = serviceDate >= weekStart && serviceDate <= weekEnd;
           } else if (dateFilter === "Tahun Ini") {
             matchesDate = serviceDate.getFullYear() === today.getFullYear();
-          } else if (dateFilter === "Custom Range" && startDate && endDate) {
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-            matchesDate = serviceDate >= start && serviceDate <= end;
+          } else if (dateFilter === "Custom Range") {
+            if (startDate && endDate) {
+              const start = new Date(startDate);
+              const end = new Date(endDate);
+              matchesDate = serviceDate >= start && serviceDate <= end;
+            } else if (startDate) {
+              const start = new Date(startDate);
+              matchesDate = serviceDate >= start;
+            } else if (endDate) {
+              const end = new Date(endDate);
+              matchesDate = serviceDate <= end;
+            } else {
+              matchesDate = true; // Show all if no dates selected
+            }
           }
 
           return matchesSearch && matchesStatus && matchesDate;
@@ -780,18 +908,34 @@
         // Initialize table
         renderTable(dummyData, 1);
 
+        function updateView() {
+          const dateFilter = document.getElementById("rangeTanggal").value;
+          const customDateRange = document.getElementById("customDateRange");
+          const tableContainer = document.querySelector(".table-container");
+          const pagination = document.querySelector(".pagination");
+          const errorMessage = document.getElementById("errorMessage");
+          const startDate = document.getElementById("tanggalAwal").value;
+          const endDate = document.getElementById("tanggalAkhir").value;
+
+          if (dateFilter === "Custom Range") {
+            customDateRange.style.display = "flex";
+            tableContainer.style.display = "block";
+            pagination.style.display = "flex";
+            errorMessage.style.display = "none";
+            filterData();
+          } else {
+            customDateRange.style.display = "none";
+            tableContainer.style.display = "block";
+            pagination.style.display = "flex";
+            errorMessage.style.display = "none";
+            filterData();
+          }
+        }
+
         // Custom date range toggle
         document
           .getElementById("rangeTanggal")
-          .addEventListener("change", function () {
-            const customDateRange = document.getElementById("customDateRange");
-            if (this.value === "Custom Range") {
-              customDateRange.style.display = "flex";
-            } else {
-              customDateRange.style.display = "none";
-            }
-            filterData();
-          });
+          .addEventListener("change", updateView);
 
         // Event listeners for filters
         document
@@ -802,10 +946,19 @@
           .addEventListener("change", filterData);
         document
           .getElementById("tanggalAwal")
-          .addEventListener("change", filterData);
+          .addEventListener("change", updateView);
         document
           .getElementById("tanggalAkhir")
-          .addEventListener("change", filterData);
+          .addEventListener("change", updateView);
+
+        // Event listener for items per page change
+        document
+          .getElementById("itemsPerPage")
+          .addEventListener("change", function() {
+            itemsPerPage = parseInt(this.value);
+            currentPage = 1;
+            renderTable(filteredData, currentPage);
+          });
       });
     </script>
   </body>
