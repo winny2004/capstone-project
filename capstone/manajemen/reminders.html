@@ -1,143 +1,610 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Riwayat Reminder</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reminder Servis Jangka Panjang</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+   
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f5f6fa;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+      /* Sidebar */
+
+      .sidebar {
+        width: 80px;
+        background-color: #fff;
+        border-right: 1px solid #e6e6e6;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: width 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+      }
+
+      .sidebar:hover {
+        width: 240px;
+      }
+
+      .sidebar .logo {
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .sidebar .logo .full-logo {
+        width: 150px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar .logo .small-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        opacity: 1;
+        transition: opacity 0.9s ease;
+        position: absolute;
+        object-fit: cover;
+        overflow: hidden;
+      }
+
+      .sidebar:hover .logo .full-logo {
+        opacity: 1;
+      }
+
+      .sidebar:hover .logo .small-logo {
+        opacity: 0;
+      }
+
+      .menu li span {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .sidebar:hover .menu li span {
+        opacity: 1;
+      }
+
+      .sidebar .user-section .user-info {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar:hover .user-section .user-info {
+        opacity: 1;
+      }
+
+      .menu {
+        flex: 1;
+        padding: 10px 0;
+      }
+
+      .menu ul {
+        list-style: none;
+      }
+
+      .menu li {
+        padding: 12px 24px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        color: #333;
+        cursor: pointer;
+        transition: 0.3s;
+        position: relative; /* Untuk badge */
+      }
+      
+      .menu li.active {
+          background-color: #fbeaea;
+          color: #c20000;
+          font-weight: 600;
+          border-left: 5px solid #c20000; /* Garis merah aktif */
+          padding-left: 19px; /* Kompensasi padding */
+      }
+      
+      .menu li:hover:not(.active) {
+          background-color: #fbeaea;
+          color: #c20000;
+          font-weight: 600;
+      }
+      
+      .menu li .badge-reminder {
+          position: absolute;
+          right: 20px;
+          background-color: #28a745; /* Hijau 'NEW' */
+          color: white;
+          padding: 2px 6px;
+          border-radius: 10px;
+          font-size: 0.75em;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+      }
+      
+      .sidebar:hover .menu li .badge-reminder {
+          opacity: 1;
+      }
+      
+      /* Ikon Image di Sidebar */
+      .menu li img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        object-fit: contain;
+      }
+
+      .user-section {
+        padding: 15px 24px;
+        border-top: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-section img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+      }
+      
+      /* ==================================== */
+      /* MAIN CONTENT STYLES (Disesuaikan untuk Jangka Panjang) */
+      /* ==================================== */
+      .main {
+        flex: 1;
+        padding: 25px 35px;
+        overflow-y: auto;
+      }
+
+      .header h2 {
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .subtext {
+        color: #666;
+        font-size: 14px;
+        margin-top: 3px;
+        margin-bottom: 20px;
+      }
+      
+      /* Stat Cards */
+      .stat-cards {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 15px;
+          margin-top: 20px;
+          margin-bottom: 30px;
+      }
+      
+      .card {
+          background: #fff;
+          border-radius: 8px;
+          padding: 15px 20px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+          color: white; 
+          font-weight: 600;
+          min-height: 120px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+      }
+      
+      .card h3 {
+          font-size: 14px;
+          opacity: 0.8;
+          margin-bottom: 5px;
+      }
+      
+      .card .value {
+          font-size: 2.5em;
+          margin: 0;
+          line-height: 1.1;
+      }
+      
+      .card .desc {
+          font-size: 0.9em;
+          margin: 5px 0 0;
+          opacity: 0.9;
+      }
+      
+      .card .detail {
+          font-size: 0.7em;
+          margin: 5px 0 0;
+          opacity: 0.7;
+          text-transform: uppercase;
+      }
+      
+      /* Warna Kartu Statistik (Sesuai Gambar Jangka Panjang) */
+      .card.stat-blue { background-color: #007bff; }
+      .card.stat-red { background-color: #dc3545; }
+      .card.stat-green { background-color: #28a745; }
+      .card.stat-orange { background-color: #ffc107; }
+      
+      /* Filter Section */
+      .filter-section {
+          background: #fff;
+          padding: 15px 20px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+      }
+
+      .filter-section h3 {
+          font-size: 16px;
+          font-weight: 700;
+      }
+      
+      .filter-section p {
+          font-size: 14px;
+          color: #666;
+          margin-top: 3px;
+          margin-bottom: 15px;
+      }
+      
+      .filter-controls {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 15px;
+          flex-wrap: wrap;
+      }
+      
+      .filter-controls select, .filter-controls input {
+          padding: 8px 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          flex-grow: 1;
+          min-width: 120px;
+          font-size: 14px;
+      }
+      
+      .tab-filters-top button {
+          padding: 8px 15px;
+          border: 1px solid #ddd;
+          background-color: white;
+          cursor: pointer;
+          border-radius: 4px;
+          font-size: 14px;
+          color: #666;
+          margin-right: 5px;
+      }
+
+      .tab-filters-top button.filter-active {
+          background-color: #007bff;
+          color: white;
+          border-color: #007bff;
+      }
+      
+      /* Reminder List Header */
+      .reminder-header h2 {
+          font-size: 1.5em;
+          font-weight: 700;
+          margin-top: 20px;
+          margin-bottom: 5px;
+      }
+      
+      .reminder-header p {
+          font-size: 0.9em;
+          color: #777;
+          margin-bottom: 15px;
+      }
+      
+      /* Tabs di bawah header reminder (Semua, 3 Bulan, 6 Bulan) */
+      .reminder-tabs button {
+          background-color: #fff;
+          border: none;
+          border-bottom: 2px solid transparent;
+          color: #666;
+          font-weight: 600;
+          padding: 8px 15px;
+          margin-right: 15px;
+          cursor: pointer;
+          transition: border-bottom 0.2s;
+      }
+      
+      .reminder-tabs button.tab-active {
+          border-bottom: 2px solid #dc3545; /* Merah untuk tab aktif */
+          color: #dc3545;
+      }
+      
+      /* Bagian Sangat Mendesak & Terlambat */
+      .urgency-header {
+          font-size: 1.1em;
+          font-weight: 700;
+          margin: 20px 0 15px;
+          color: #dc3545;
+      }
+      
+      .reminder-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 15px;
+      }
+      
+      /* Styling untuk Kartu Reminder Merah */
+      .reminder-card {
+          background-color: #fceaea; /* Merah muda */
+          border-left: 5px solid #dc3545; /* Garis merah tebal */
+          padding: 15px;
+          border-radius: 6px;
+          position: relative;
+          color: #333; /* Default text color inside card */
+      }
+      
+      .reminder-card-header {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.8em;
+          color: #999;
+          border-bottom: 1px dashed #e0c8c8;
+          padding-bottom: 5px;
+          margin-bottom: 10px;
+      }
+      
+      .reminder-card-body p {
+          margin: 3px 0;
+      }
+      
+      .reminder-card-body .name {
+          font-weight: 700;
+          font-size: 1.1em;
+      }
+      
+      .reminder-card-body .service-date,
+      .reminder-card-body .reminder-type {
+          font-size: 0.85em;
+          color: #666;
+      }
+      
+      .reminder-card .whatsapp-btn {
+          background-color: #25d366;
+          color: white;
+          border: none;
+          padding: 8px;
+          border-radius: 4px;
+          cursor: pointer;
+          width: 100%;
+          font-size: 0.9em;
+          margin-top: 10px;
+      }
+      
+      .reminder-card .whatsapp-btn i {
+          margin-right: 5px;
+      }
+      
+      .reminder-card .status-tag {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          background-color: #dc3545;
+          color: white;
+          padding: 2px 6px;
+          border-radius: 3px;
+          font-size: 0.7em;
+          text-transform: uppercase;
+      }
+    </style>
 </head>
-<body class="bg-gray-100 flex font-sans">
 
-  <!-- Sidebar -->
-  <aside class="w-20 h-screen bg-white shadow-md flex flex-col justify-between items-center py-6">
-    <!-- Top icons -->
-    <div class="flex flex-col items-center space-y-6">
-      <!-- Logo merah -->
-      <div class="bg-red-600 p-3 rounded-xl">
-        <i data-lucide="flame" class="text-white w-5 h-5"></i>
-      </div>
-
-      <!-- Menu icons -->
-      <div class="flex flex-col items-center space-y-6 text-gray-400">
-        <i data-lucide="home" class="w-5 h-5 hover:text-red-600 cursor-pointer"></i>
-        <i data-lucide="heart" class="w-5 h-5 hover:text-red-600 cursor-pointer"></i>
-        <i data-lucide="bar-chart-3" class="w-5 h-5 hover:text-red-600 cursor-pointer"></i>
-        <i data-lucide="folder" class="w-5 h-5 hover:text-red-600 cursor-pointer"></i>
-        <i data-lucide="bell" class="w-5 h-5 hover:text-red-600 cursor-pointer"></i>
-
-        <!-- Aktif Reminder -->
-        <div class="bg-red-600 p-3 rounded-xl text-white">
-          <i data-lucide="calendar-days" class="w-5 h-5"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-- Profil bawah -->
-    <div class="bg-gray-200 p-3 rounded-xl">
-      <i data-lucide="user" class="text-gray-500 w-5 h-5"></i>
-    </div>
-  </aside>
-
-  <!-- Konten utama -->
-  <main class="flex-1 px-8 py-6">
-    <h1 class="text-2xl font-semibold">Riwayat Reminder</h1>
-    <p class="text-gray-500 text-sm mb-6">Pantau dan kelola Follow up yang sudah dilakukan</p>
-
-    <!-- Tombol status -->
-    <div class="flex space-x-3 mb-8">
-      <button class="px-5 py-1.5 rounded-full bg-green-200 text-green-800 font-medium text-sm">Booking</button>
-      <button class="px-5 py-1.5 rounded-full bg-sky-200 text-sky-800 font-medium text-sm">Resepwm</button>
-      <button class="px-5 py-1.5 rounded-full bg-yellow-200 text-yellow-800 font-medium text-sm">dikirim</button>
-      <button class="px-5 py-1.5 rounded-full bg-gray-200 text-gray-800 font-medium text-sm">Pending</button>
-    </div>
-
-    <!-- Tabel -->
-    <div class="bg-white shadow rounded-xl overflow-hidden">
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-gray-100 text-gray-700 text-sm">
-          <tr>
-            <th class="py-3 px-5">IN ORDER</th>
-            <th class="py-3 px-5">PELANGGAN</th>
-            <th class="py-3 px-5">STATUS 3M</th>
-            <th class="py-3 px-5">STATUS BM</th>
-            <th class="py-3 px-5">AKSI</th>
-          </tr>
-        </thead>
-        <tbody class="text-sm text-gray-700">
-          <!-- Contoh data -->
-          <tr class="border-b hover:bg-gray-50">
-            <td class="py-3 px-5">
-              SH1770<br>
-              <span class="text-xs text-gray-500">20 Oktober 2025</span><br>
-              <span class="text-xs text-gray-400">827575TRA</span>
-            </td>
-            <td class="py-3 px-5">
-              Bp Santo<br>
-              <span class="text-xs text-gray-500">+62-838-6387-8602</span>
-            </td>
-            <td class="py-3 px-5">
-              Belum Direminder<br>
-              <span class="text-xs text-gray-500">1 dari 10 hari</span><br>
-              <span class="text-xs text-gray-500">NORMAL</span><br>
-              <span class="text-sky-600 font-medium text-xs">Target 27 Jan 2026</span>
-            </td>
-            <td class="py-3 px-5">
-              Belum Direminder<br>
-              <span class="text-xs text-gray-500">1 dari 10 hari</span><br>
-              <span class="text-xs text-gray-500">NORMAL</span><br>
-              <span class="text-sky-600 font-medium text-xs">Target 27 April 2026</span>
-            </td>
-            <td class="py-3 px-5">
-              <span class="text-sky-600 font-medium cursor-pointer">Update</span><br>
-              <span class="text-green-600 font-medium cursor-pointer">3M WA</span><br>
-              <span class="text-green-600 font-medium cursor-pointer">BM WA</span>
-            </td>
-          </tr>
-
-          <!-- Ulangi baris agar tampak penuh -->
-          <tr class="border-b hover:bg-gray-50">
-            <td class="py-3 px-5">SH1770<br><span class="text-xs text-gray-500">20 Oktober 2025</span><br><span class="text-xs text-gray-400">827575TRA</span></td>
-            <td class="py-3 px-5">Bp Santo<br><span class="text-xs text-gray-500">+62-838-6387-8602</span></td>
-            <td class="py-3 px-5">Belum Direminder<br><span class="text-xs text-gray-500">1 dari 10 hari</span><br><span class="text-xs text-gray-500">NORMAL</span><br><span class="text-sky-600 font-medium text-xs">Target 27 Jan 2026</span></td>
-            <td class="py-3 px-5">Belum Direminder<br><span class="text-xs text-gray-500">1 dari 10 hari</span><br><span class="text-xs text-gray-500">NORMAL</span><br><span class="text-sky-600 font-medium text-xs">Target 27 April 2026</span></td>
-            <td class="py-3 px-5"><span class="text-sky-600 font-medium cursor-pointer">Update</span><br><span class="text-green-600 font-medium cursor-pointer">3M WA</span><br><span class="text-green-600 font-medium cursor-pointer">BM WA</span></td>
-          </tr>
-          <tr class="border-b hover:bg-gray-50">
-            <td class="py-3 px-5">SH1770<br><span class="text-xs text-gray-500">20 Oktober 2025</span><br><span class="text-xs text-gray-400">827575TRA</span></td>
-            <td class="py-3 px-5">Bp Santo<br><span class="text-xs text-gray-500">+62-838-6387-8602</span></td>
-            <td class="py-3 px-5">Belum Direminder<br><span class="text-xs text-gray-500">1 dari 10 hari</span><br><span class="text-xs text-gray-500">NORMAL</span><br><span class="text-sky-600 font-medium text-xs">Target 27 Jan 2026</span></td>
-            <td class="py-3 px-5">Belum Direminder<br><span class="text-xs text-gray-500">1 dari 10 hari</span><br><span class="text-xs text-gray-500">NORMAL</span><br><span class="text-sky-600 font-medium text-xs">Target 27 April 2026</span></td>
-            <td class="py-3 px-5"><span class="text-sky-600 font-medium cursor-pointer">Update</span><br><span class="text-green-600 font-medium cursor-pointer">3M WA</span><br><span class="text-green-600 font-medium cursor-pointer">BM WA</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Pagination -->
-      <div class="flex justify-between items-center px-5 py-3 bg-gray-50 text-sm text-gray-600">
+<body>
+    <div class="sidebar">
         <div>
-          <select class="border rounded-md px-2 py-1 text-sm">
-            <option>10 / Page</option>
-            <option>20 / Page</option>
-            <option>50 / Page</option>
-          </select>
-          <span class="ml-3">Showing 1–10 of 7291</span>
+            <div class="logo">
+                <img src="../image/pitcar.png" alt="Pitcar Logo" class="full-logo" />
+                <img src="../image/logopitcar.png" alt="Pitcar Small Logo" class="small-logo" />
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><img src="../image/ikonhome.png" alt="Dashboard Icon" /><span>Dashboard</span></li>
+                    <li><img src="../image/ikonreviews.png" alt="Reviews Icon" /><span>Reviews</span></li>
+                    <li><img src="../image/ikonsurvey.png" alt="Survey Icon" /><span>Survey</span></li>
+                    <li><img src="../image/ikonremindersH+3.png" alt="Reminder H+3 Icon" /><span>Reminder H+3</span></li>
+                    <li class="active"><img src="../image/ikonreminders.png" alt="Reminders Icon" /><span>Reminders</span><span class="badge-reminder">New</span></li>
+                </ul>
+            </div>
         </div>
-        <div class="flex items-center space-x-1">
-          <button class="px-3 py-1 rounded-md bg-gray-200">First</button>
-          <button class="px-3 py-1 rounded-md bg-gray-200">&lt;</button>
-          <button class="px-3 py-1 rounded-md bg-red-600 text-white">1</button>
-          <button class="px-3 py-1 rounded-md bg-gray-200">2</button>
-          <button class="px-3 py-1 rounded-md bg-gray-200">3</button>
-          <button class="px-3 py-1 rounded-md bg-gray-200">&gt;</button>
-          <button class="px-3 py-1 rounded-md bg-gray-200">Last</button>
-        </div>
-      </div>
-    </div>
-  </main>
 
-  <script>
-    lucide.createIcons();
-  </script>
+        <div class="user-section">
+            <img src="../image/ikonuser.png" alt="User Icon" />
+            <div class="user-info">
+                <div class="name">Pitcar Service</div>
+                <div>User</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <h2>Reminder Servis Jangka Panjang</h2>
+            <p class="subtext">Kelola follow up pelanggan setelah 3 dan 6 bulan servis</p>
+        </div>
+
+        <section class="stat-cards">
+            <div class="card stat-blue">
+                <h3>Reminder 3 Bulan</h3>
+                <p class="value">7</p>
+                <p class="desc">Order perlu diremind</p>
+                <p class="detail">2192 Terlambat</p>
+            </div>
+            <div class="card stat-red">
+                <h3>Reminder 6 Bulan</h3>
+                <p class="value">1</p>
+                <p class="desc">Order perlu diremind</p>
+                <p class="detail">2192 Terlambat</p>
+            </div>
+            <div class="card stat-green">
+                <h3>Reminder 9 Bulan</h3>
+                <p class="value">1%</p>
+                <p class="desc">Rata-rata (target)</p>
+                <p class="detail">3M | 6M | 9M | 12M</p>
+            </div>
+            <div class="card stat-orange">
+                <h3>Tingkat Booking</h3>
+                <p class="value">0%</p>
+                <p class="desc">Konversi booking</p>
+                <p class="detail">3M: 0/345 - 6M: 0/0</p>
+            </div>
+        </section>
+
+        <section class="filter-section">
+            <h3>Filter Pencarian</h3>
+            <p>Gunakan fitur filter untuk mencari data yang spesifik.</p>
+            
+            <div class="filter-controls">
+                <select><option>Jenis Reminder</option></select>
+                <select><option>Status</option></select>
+                <select><option>Tingkat urgensi</option></select>
+                <select><option>Rentang tanggal</option></select>
+                <select><option>Semua Waktu</option></select>
+                <input type="search" placeholder="Cari berdasarkan">
+            </div>
+            
+            <div class="tab-filters-top">
+                <button class="filter-btn filter-active">Semua Reminder</button>
+                <button class="filter-btn">Semua Status</button>
+                <button class="filter-btn">3 Bulan</button>
+                <button class="filter-btn">6 Bulan</button>
+            </div>
+        </section>
+        
+        <section class="reminder-list">
+            <div class="reminder-header">
+                <h2>Reminder yang perlu dikirim</h2>
+                <p>Order servis perlu difollow up berdasarkan jadwal</p>
+            </div>
+
+            <div class="reminder-tabs">
+                <button class="tab-btn tab-active" data-filter="Semua">Semua</button>
+                <button class="tab-btn" data-filter="3Bulan">3 Bulan</button>
+                <button class="tab-btn" data-filter="6Bulan">6 Bulan</button>
+            </div>
+            
+            <h3 class="urgency-header">Sangat Mendesak & Terlambat</h3>
+            
+            <div class="reminder-cards-grid">
+                <div class="reminder-card">
+                    <span class="status-tag">overdue</span>
+                    <div class="reminder-card-header">
+                        <span>Order #29390</span>
+                        <span>9/10/20</span>
+                    </div>
+                    <div class="reminder-card-body">
+                        <p class="name">Agung Sumbing</p>
+                        <p class="service-date">B 9901 AB</p>
+                        <p class="service-date">Servis Terakhir: 28/07/20</p>
+                        <p class="reminder-type">Reminder 3 Bulan</p>
+                    </div>
+                    <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Kirim Whatsapp</button>
+                </div>
+                <div class="reminder-card">
+                    <span class="status-tag">overdue</span>
+                    <div class="reminder-card-header"><span>Order #29391</span><span>9/10/20</span></div>
+                    <div class="reminder-card-body"><p class="name">Agung Sumbing</p><p class="service-date">B 9901 AB</p><p class="service-date">Servis Terakhir: 28/07/20</p><p class="reminder-type">Reminder 3 Bulan</p></div>
+                    <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Kirim Whatsapp</button>
+                </div>
+                <div class="reminder-card">
+                    <span class="status-tag">overdue</span>
+                    <div class="reminder-card-header"><span>Order #29392</span><span>9/10/20</span></div>
+                    <div class="reminder-card-body"><p class="name">Agung Sumbing</p><p class="service-date">B 9901 AB</p><p class="service-date">Servis Terakhir: 28/07/20</p><p class="reminder-type">Reminder 3 Bulan</p></div>
+                    <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Kirim Whatsapp</button>
+                </div>
+                <div class="reminder-card">
+                    <span class="status-tag">overdue</span>
+                    <div class="reminder-card-header"><span>Order #29393</span><span>9/10/20</span></div>
+                    <div class="reminder-card-body"><p class="name">Agung Sumbing</p><p class="service-date">B 9901 AB</p><p class="service-date">Servis Terakhir: 28/07/20</p><p class="reminder-type">Reminder 3 Bulan</p></div>
+                    <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Kirim Whatsapp</button>
+                </div>
+                <div class="reminder-card">
+                    <span class="status-tag">overdue</span>
+                    <div class="reminder-card-header"><span>Order #29394</span><span>9/10/20</span></div>
+                    <div class="reminder-card-body"><p class="name">Agung Sumbing</p><p class="service-date">B 9901 AB</p><p class="service-date">Servis Terakhir: 28/07/20</p><p class="reminder-type">Reminder 3 Bulan</p></div>
+                    <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Kirim Whatsapp</button>
+                </div>
+                <div class="reminder-card">
+                    <span class="status-tag">overdue</span>
+                    <div class="reminder-card-header"><span>Order #29395</span><span>9/10/20</span></div>
+                    <div class="reminder-card-body"><p class="name">Agung Sumbing</p><p class="service-date">B 9901 AB</p><p class="service-date">Servis Terakhir: 28/07/20</p><p class="reminder-type">Reminder 3 Bulan</p></div>
+                    <button class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Kirim Whatsapp</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        // ====================================
+        // JAVASCRIPT UNTUK INTERAKSI TOMBOL & SIDEBAR
+        // ====================================
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            // Logika untuk Tombol Filter Bawah di Filter Section (Semua Reminder, 3 Bulan, 6 Bulan)
+            const filterButtons = document.querySelectorAll('.tab-filters-top .filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('filter-active'));
+                    this.classList.add('filter-active');
+                    console.log(`Filter Bawah Aktif: ${this.textContent}`);
+                });
+            });
+
+            // Logika untuk Tab Reminder (Semua, 3 Bulan, 6 Bulan) di bawah header reminder
+            const reminderTabs = document.querySelectorAll('.reminder-tabs .tab-btn');
+            reminderTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    reminderTabs.forEach(t => t.classList.remove('tab-active'));
+                    this.classList.add('tab-active');
+                    console.log(`Tab Reminder Aktif: ${this.textContent}`);
+                });
+            });
+
+            // Logika Hover Sidebar (Dipertahankan dari kode sebelumnya)
+            const sidebar = document.querySelector('.sidebar');
+            const menuItems = document.querySelectorAll('.menu li');
+            const userSectionInfo = document.querySelector('.user-section .user-info');
+            const fullLogo = document.querySelector('.sidebar .logo .full-logo');
+            const smallLogo = document.querySelector('.sidebar .logo .small-logo');
+
+            sidebar.addEventListener('mouseenter', () => {
+                menuItems.forEach(li => {
+                    const span = li.querySelector('span');
+                    if (span) span.style.opacity = 1;
+                    const badge = li.querySelector('.badge-reminder');
+                    if (badge) badge.style.opacity = 1;
+                });
+                if (userSectionInfo) userSectionInfo.style.opacity = 1;
+                if (fullLogo) fullLogo.style.opacity = 1;
+                if (smallLogo) smallLogo.style.opacity = 0;
+            });
+
+            sidebar.addEventListener('mouseleave', () => {
+                menuItems.forEach(li => {
+                    const span = li.querySelector('span');
+                    if (span) span.style.opacity = 0;
+                    const badge = li.querySelector('.badge-reminder');
+                    if (badge) badge.style.opacity = 0;
+                });
+                if (userSectionInfo) userSectionInfo.style.opacity = 0;
+                if (fullLogo) fullLogo.style.opacity = 0;
+                if (smallLogo) smallLogo.style.opacity = 1;
+            });
+        });
+    </script>
 </body>
 </html>
