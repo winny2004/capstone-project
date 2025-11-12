@@ -52,11 +52,14 @@
       }
 
       .sidebar .logo .small-logo {
-        width: 24px;
-        height: 24px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%; /* Membuat gambar bulat sempurna */
         opacity: 1;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.9s ease;
         position: absolute;
+        object-fit: cover; /* Menjaga proporsi gambar */
+        overflow: hidden; /* Supaya tidak keluar dari lingkaran */
       }
 
       .sidebar:hover .logo .full-logo {
@@ -378,7 +381,7 @@
               <img src="../image/ikonreminders.png" alt="Reminders Icon" /><span
                 >Reminders</span
               >
-              <span style="color: green; font-weight: 600; margin-left: 4px"
+              <span style="color: green; font-weight: 600; margin-left: 50px"
                 >New</span
               >
             </li>
