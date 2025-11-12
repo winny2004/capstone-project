@@ -128,6 +128,14 @@
           icon.classList.replace("fa-eye-slash", "fa-eye");
         }
       }
+
+      // Handle login form submission
+      document.querySelector('.login-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        // Simple redirect to dashboard (you can add authentication logic here later)
+        window.location.href = 'dashboard.html';
+      });
     </script>
   </body>
 </html>
