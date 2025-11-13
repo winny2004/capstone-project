@@ -197,30 +197,41 @@
         font-weight: 600;
         margin-top: 6px;
       }
-      /* Follow Up Section Header */
+    /* Follow Up Hari Ini Card */
+.followup-card {
+  background: #faf7f7;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  overflow: hidden;
+}
 
-      .followup-header {
-        background: #fff;
-        margin-top: 20px;
-        padding: 15px 20px 10px 20px;
-        border-radius: 8px 8px 0 0;
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
-        border-bottom: 2px solid #e6e6e6;
-      }
-      /* Follow Up Section */
+/* Header title */
+.followup-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
 
-      .followup {
-        background: #fff;
-        padding: 15px 20px;
-        border-radius: 0 0 15px 15px;
-        font-size: 14px;
-        color: #555;
-        text-align: center;
-        margin-top: 0;
-        border-bottom: 1px solid #e0e0e0;
-      }
+/* Body text */
+.followup-body {
+  text-align: center;
+  padding: 24px 20px;
+}
+
+.followup-body .main-text {
+  color: #555;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.followup-body .sub-text {
+  color: #999;
+  font-size: 13px;
+}
 
     
 
@@ -358,6 +369,20 @@
       .pagination button:hover {
         background: #fbeaea;
       }
+
+      .logout-popup {
+        position: fixed;
+        bottom: 50px;
+        left: 10px;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        z-index: 1001;
+        font-size: 14px;
+        color: #333;
+      }
     </style>
   </head>
 
@@ -398,14 +423,17 @@
             <span class="new-badge">New</span>
           </span>
         </a>
-        <a href="#" class="menu-item menu-user">
+        <div class="menu-item menu-user" id="user-btn">
           <img src="../image/ikonuser.png" alt="User" class="menu-icon" />
           <span class="menu-text">
             <span class="main-text">Pitcar Service</span>
             <span class="sub-text">User</span>
           </span>
-        </a>
+        </div>
       </div>
+
+      <!-- 🔽 Pop Up Logout (posisi fix di kiri bawah sidebar) -->
+      <div class="logout-popup" id="logout-popup" style="display: none;" onclick="window.location.href='login.html'">Logout</div>
     </div>
 
     <div class="main-content" id="mainContent">
@@ -436,13 +464,15 @@
         </div>
       </div>
 
-      <!-- New Header Section -->
-      <div class="followup-header">Follow Up Hari Ini</div>
 
-      <div class="followup">
-        Sudah tidak ada reminder hari ini<br />
-        Semua pelanggan sudah dikirimkan
+          <!-- Follow Up Hari Ini -->
+    <div class="followup-card">
+      <div class="followup-title">Follow Up Hari Ini</div>
+      <div class="followup-body">
+        <p class="main-text">Sudah tidak ada reminder hari ini</p>
+        <p class="sub-text">Semua pelanggan sudah direminder</p>
       </div>
+    </div>
 
       <div class="table-section">
         <h3>Service History & Reminder Status</h3>
@@ -986,7 +1016,27 @@
             currentPage = 1;
             renderTable(filteredData, currentPage);
           });
+
+        // === Pop Up Logout ===
+        const userBtn = document.getElementById("user-btn");
+        const logoutPopup = document.getElementById("logout-popup");
+
+        userBtn.addEventListener("click", () => {
+          logoutPopup.style.display =
+            logoutPopup.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+          if (
+            !userBtn.contains(event.target) &&
+            !logoutPopup.contains(event.target)
+          ) {
+            logoutPopup.style.display = "none";
+          }
+        });
       });
     </script>
   </body>
 </html>
+
+
