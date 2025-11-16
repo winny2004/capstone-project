@@ -532,6 +532,145 @@
         font-size: 0.7em;
         text-transform: uppercase;
       }
+
+      /* ===== NEW TABLE STYLES (Riwayat Reminder) ===== */
+      .history-section {
+        margin-top: 40px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .history-header h2 {
+        font-size: 1.5em;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .history-header p {
+        font-size: 0.9em;
+        color: #777;
+        margin: 0;
+      }
+
+      .history-tabs button {
+        padding: 8px 15px;
+        border: 1px solid #ddd;
+        background-color: white;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #666;
+        margin-left: 5px;
+      }
+
+      .history-tabs button.active-tab {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+      }
+
+      .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .history-table th,
+      .history-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+      }
+
+      .history-table th {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .history-table tbody tr:hover {
+        background-color: #f5f5f5;
+      }
+
+      .status-cell span {
+        display: block;
+        font-weight: 600;
+      }
+
+      .status-cell .date {
+        font-size: 0.9em;
+        color: #999;
+      }
+
+      .status-cell .status-3m {
+        color: #007bff; /* Warna untuk Belum Direminder 3M */
+      }
+      .status-cell .status-6m {
+        color: #dc3545; /* Warna untuk Belum Direminder 6M */
+      }
+      .status-cell .normal {
+        font-weight: 400;
+      }
+
+      .action-buttons button {
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        font-size: 13px;
+        margin-right: 10px;
+        padding: 0;
+      }
+
+      .action-buttons button.whatsapp-3m {
+        color: #28a745;
+      }
+      .action-buttons button.whatsapp-6m {
+        color: #dc3545;
+      }
+      .action-buttons button:hover {
+        text-decoration: underline;
+      }
+
+      .pagination-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        font-size: 14px;
+      }
+
+      .page-size-dropdown {
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .page-numbers button {
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        background-color: white;
+        margin-left: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .page-numbers button.active-page {
+        background-color: #dc3545;
+        color: white;
+        border-color: #dc3545;
+      }
+      /* ===== END NEW TABLE STYLES ===== */
     </style>
   </head>
 
@@ -862,7 +1001,286 @@
           </div>
         </div>
       </section>
-    </div>
+
+      <section class="history-section">
+        <div class="history-header">
+          <div>
+            <h2>Riwayat Reminder</h2>
+            <p>Pantau dan kelola Follow Up yang sudah dilakukan</p>
+          </div>
+          <div class="history-tabs">
+            <button>Booking</button>
+            <button>Respon</button>
+            <button>Dikirim</button>
+            <button class="active-tab">Pending</button>
+          </div>
+        </div>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>IN ORDER</th>
+              <th>PELANGGAN</th>
+              <th>STATUS 3M</th>
+              <th>STATUS 6M</th>
+              <th>AKSI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                **S11770**<br />
+                29 October 2025<br />
+                09:37<br />
+                82755TRA
+              </td>
+              <td>
+                **Bp Santo**<br />
+                +62 838-6387-6602
+              </td>
+              <td class="status-cell">
+                <span class="status-3m">Belum Direminder</span>
+                <span class="normal">1 dari 90 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 Jan 2026</span>
+              </td>
+              <td class="status-cell">
+                <span class="status-6m">Belum Direminder</span>
+                <span class="normal">1 dari 180 hari</span>
+                <span class="normal">NORMAL</span>
+                <span class="date">Target 27 April 2026</span>
+              </td>
+              <td class="action-buttons">
+                <button>Update</button>
+                <button class="whatsapp-3m">3M WA</button>
+                <button class="whatsapp-6m">6M WA</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination-controls">
+          <div>
+            Showing 1-10 of 7291
+            <select class="page-size-dropdown">
+              <option>10 / Page</option>
+            </select>
+          </div>
+          <div class="page-numbers">
+            <button>First</button>
+            <button class="active-page">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
+            <button>Last</button>
+          </div>
+        </div>
+      </section>
+      </div>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const dropdownWrappers = document.querySelectorAll(
@@ -989,4 +1407,3 @@
     </script>
   </body>
 </html>
-
