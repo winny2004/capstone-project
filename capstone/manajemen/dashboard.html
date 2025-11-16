@@ -209,10 +209,10 @@
         }
 
         .stat-card {
-            background: rgb(245, 245, 245);
+            background: rgb(249, 249, 249);
             padding: 12px;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(47, 47, 47, 0.1);
             border: 1px solid #f0f0f0;
         }
 
@@ -257,10 +257,10 @@
         }
 
         .chart-card {
-            background: rgb(245, 245, 245);
+            background: rgb(249, 249, 249);
             padding: 18px;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(47, 47, 47, 0.1);
             border: 1px solid #f0f0f0;
         }
 
@@ -312,7 +312,7 @@
                     <span class="new-badge">New</span>
                 </span>
             </a>
-            <a href="#" class="menu-item menu-user">
+            <a href="login.html" class="menu-item menu-user">
                 <img src="../image/ikonuser.png" alt="User" class="menu-icon">
                 <span class="menu-text">
                     <span class="main-text">Pitcar Service</span>
@@ -329,14 +329,20 @@
                     <h1>Dashboard Review</h1>
                     <p>Analisis feedback pelanggan</p>
                 </div>
-                <div class="header-right">
-                    <select>
-                        <option>Hari Ini</option>
-                        <option>Minggu Ini</option>
-                        <option>Bulan Ini</option>
-                        <option>Tahun Ini</option>
-                        <option>Pilih Tanggal</option>
+                <div class="header-right" style="display:flex; align-items:center; gap:10px;">
+                    <select id="filterSelect">
+                        <option value="hari">Hari Ini</option>
+                        <option value="minggu">Minggu Ini</option>
+                        <option value="bulan">Bulan Ini</option>
+                        <option value="tahun">Tahun Ini</option>
+                        <option value="tanggal">Pilih Tanggal</option>
                     </select>
+
+                    <!-- 💡 Input tanggal sekarang berada di dalam header-right -->
+                    <div id="dateRange" style="display:none; gap:8px;">
+                        <input type="date" id="startDate" style="padding:5px; font-size:12px;">
+                        <input type="date" id="endDate" style="padding:5px; font-size:12px;">
+                    </div>
                 </div>
             </div>
 
@@ -433,6 +439,19 @@
             sidebar.classList.remove('expanded');
             mainContent.classList.remove('expanded');
         });
+
+        const selectFilter = document.getElementById("filterSelect");
+        const dateBox = document.getElementById("dateRange");
+
+        selectFilter.addEventListener("change", function () {
+            if (this.value === "tanggal") {
+                dateBox.style.display = "flex"; 
+                return;
+            }
+            dateBox.style.display = "none";
+            console.log("Filter dipilih:", this.value);
+        });
+
 
         // Bar Chart Configuration
         const barConfig = (data) => ({
