@@ -6,9 +6,7 @@
     <title>PITCAR Reminder Servis Jangka Panjang</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* ========================================================= */
-        /* BASE STYLES DARI KODE ASLI (Dashboard Reviews) */
-        /* ========================================================= */
+      
         * {
             margin: 0;
             padding: 0;
@@ -17,7 +15,7 @@
         }
 
         body {
-            background: #f5f6fa; /* Mengganti ke #f5f6fa agar sesuai dengan konten */
+            background: #f5f6fa;
             display: flex;
             height: 100vh;
             overflow: hidden;
@@ -99,7 +97,7 @@
             margin: 4px;
         }
         
-        /* Ganti img.menu-icon dengan span.menu-icon untuk Font Awesome */
+       
         .menu-icon {
             width: 20px;
             height: 20px;
@@ -108,14 +106,13 @@
             justify-content: center;
             align-items: center;
             margin-left: 3px;
-            color: #666; /* Warna default ikon */
+            color: #666; 
         }
         
         .menu-icon i {
             font-size: 16px;
         }
         
-        /* Pastikan ikon aktif tetap putih */
         .menu-item.active .menu-icon i {
             color: white; 
         }
@@ -162,7 +159,7 @@
 
         .main-content {
             flex: 1;
-            padding: 25px 35px; /* Sesuaikan padding agar konten tidak terlalu menempel */
+            padding: 25px 35px;
             overflow-y: auto;
             margin-left: 50px;
             transition: margin-left 0.3s ease;
@@ -174,7 +171,7 @@
 
         .dashboard {
             max-width: 100%;
-            padding: 0; /* Hapus padding karena sudah di .main-content */
+            padding: 0;
             background: transparent;
             border-radius: 0;
             margin: 0;
@@ -188,20 +185,15 @@
 
         .header-left p {
             color: #686868;
-            font-size: 14px; /* Dibuat sedikit lebih besar */
+            font-size: 14px;
             margin-top: 3px;
         }
 
-        /* Hilangkan style header-right yang tidak relevan dengan halaman ini */
         .header-right {
-             display: none !important; /* Hilangkan filter tanggal dari halaman review */
+             display: none !important;
         }
         
-        /* ========================================================= */
-        /* 🎨 STYLE KONTEN BARU (Reminder Jangka Panjang) */
-        /* ========================================================= */
-
-        /* Stat Cards */
+        
         .stat-cards {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -249,13 +241,12 @@
             text-transform: uppercase;
         }
 
-        /* Warna Kartu Statistik */
+       
         .card.stat-blue { background-color: #007bff; }
         .card.stat-red { background-color: #dc3545; }
         .card.stat-green { background-color: #28a745; }
         .card.stat-orange { background-color: #ffc107; }
 
-        /* Filter Section */
         .filter-section {
             background: #fff;
             padding: 15px 20px;
@@ -338,12 +329,18 @@
             font-size: 14px;
             min-height: 38px;
         }
-
-        .tab-filters-top {
-            margin-top: 10px;
-        }
         
-        .tab-filters-top button {
+        /* === NEW: Scrollable filter options container === */
+        .scrollable-filter-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px; /* Memberi sedikit jarak dari filter atas */
+            overflow-x: auto; /* Aktifkan scroll horizontal */
+            padding-bottom: 5px; 
+        }
+
+        .scrollable-filter-options button {
+            flex-shrink: 0; /* Pastikan tombol tidak menyusut */
             padding: 8px 15px;
             border: 1px solid #ddd;
             background-color: white;
@@ -351,13 +348,26 @@
             border-radius: 4px;
             font-size: 14px;
             color: #666;
-            margin-right: 5px;
+            white-space: nowrap; /* Pastikan teks tidak patah */
         }
 
-        .tab-filters-top button.filter-active {
+        .scrollable-filter-options button.filter-active {
             background-color: #007bff;
             color: white;
             border-color: #007bff;
+        }
+
+        /* Kustomisasi scrollbar (opsional, untuk tampilan yang lebih baik) */
+        .scrollable-filter-options::-webkit-scrollbar {
+            height: 6px;
+        }
+        .scrollable-filter-options::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+        .scrollable-filter-options::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
         }
 
         /* Reminder List Section (Kartu Merah) */
@@ -627,14 +637,14 @@
 </head>
 
 <body>
-   <div class="sidebar" id="sidebar">
+     <div class="sidebar" id="sidebar">
         <div class="logo">
             <img src="../image/logopitcar.png" alt="Logo" class="logo-icon">
             <img src="../image/pitcar.png" alt="PITCAR" class="logo-text">
         </div>
-        
-        <div class="menu">
-            <a href="dashboard.html" class="menu-item active">
+
+         <div class="menu">
+            <a href="dashboard.html" class="menu-item ">
                 <img src="../image/ikonhome.png" alt="Dashboard" class="menu-icon">
                 <span class="menu-text">Dashboard</span>
             </a>
@@ -650,22 +660,22 @@
                 <img src="../image/ikonremindersH+3.png" alt="Reminder" class="menu-icon">
                 <span class="menu-text">Reminder H+3</span>
             </a>
-            <a href="reminders.html" class="menu-item">
+            <a href="reminders.html" class="menu-item active">
                 <img src="../image/ikonreminders.png" alt="Reminders" class="menu-icon">
                 <span class="menu-text">
                     Reminders
                     <span class="new-badge">New</span>
                 </span>
             </a>
-            <a href="login.html" class="menu-item menu-user">
-                <img src="../image/ikonuser.png" alt="User" class="menu-icon">
+            <a href="login.html" class="menu-item menu-user" id="user-btn">
+                <span class="menu-icon"><i class="fas fa-user-circle"></i></span>
                 <span class="menu-text">
                     <span class="main-text">Pitcar Service</span>
                     <span class="sub-text">User</span>
                 </span>
             </a>
         </div>
-    </div>
+        
         <div class="logout-popup" id="logout-popup" style="display: none;" onclick="window.location.href='login.html'">Logout</div>
     </div>
 
@@ -818,11 +828,8 @@
                     <input type="search" placeholder="Cari Order/Customer atau Plat" id="searchCustomerLongTerm" />
                 </div>
 
-                <div class="tab-filters-top">
-                    <button class="filter-btn filter-active">Semua Reminder</button>
-                    <button class="filter-btn">Semua Status</button>
-                    <button class="filter-btn">3 Bulan</button>
-                    <button class="filter-btn">6 Bulan</button>
+                <div class="scrollable-filter-options">
+            
                 </div>
             </section>
             
@@ -939,20 +946,16 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // =========================================================
-            // 🛠️ SIDEBAR LOGIC (DARI KODE ASLI)
-            // =========================================================
+           
             const sidebar = document.getElementById("sidebar");
             const mainContent = document.getElementById("mainContent");
             const userBtn = document.getElementById("user-btn");
             const logoutPopup = document.getElementById("logout-popup");
             
-            // Ganti link menu-user agar dapat memicu logout popup
             const userMenuItem = document.querySelector('.menu-user');
             if (userMenuItem) {
                 userMenuItem.removeAttribute('href');
             }
-
 
             // Desktop hover otomatis
             sidebar.addEventListener("pointerenter", () => {
@@ -969,18 +972,19 @@
             // Pop Up Logout
             userBtn.addEventListener("click", (event) => {
                 event.stopPropagation();
-                // Pastikan pop up muncul di dalam sidebar saat diperluas
-                const sidebarRect = sidebar.getBoundingClientRect();
+                
                 if(sidebar.classList.contains('expanded')) {
+                     // Atur posisi agar muncul di dalam sidebar expanded
                      logoutPopup.style.left = '20px';
                      logoutPopup.style.bottom = '10px';
                      logoutPopup.style.width = 'calc(100% - 40px)';
-                     logoutPopup.style.position = 'absolute'; // Ubah posisi
+                     logoutPopup.style.position = 'absolute';
                 } else {
+                     // Atur posisi agar muncul di samping sidebar kecil
                      logoutPopup.style.left = '10px';
                      logoutPopup.style.bottom = '50px';
                      logoutPopup.style.width = 'auto';
-                     logoutPopup.style.position = 'fixed'; // Kembalikan posisi
+                     logoutPopup.style.position = 'fixed';
                 }
 
                 logoutPopup.style.display =
@@ -997,9 +1001,7 @@
             });
 
 
-            // =========================================================
-            // 🛠️ CUSTOM DROPDOWN LOGIC
-            // =========================================================
+            
             const dropdownWrappers = document.querySelectorAll(
                 ".custom-dropdown-wrapper"
             );
@@ -1010,7 +1012,6 @@
 
                 display.addEventListener("click", (e) => {
                     e.stopPropagation();
-                    // Close other open dropdowns
                     document
                         .querySelectorAll(".custom-dropdown-options.show")
                         .forEach((openOptions) => {
@@ -1027,13 +1028,11 @@
                     item.addEventListener("click", (e) => {
                         e.stopPropagation();
                         
-                        // Copy content, mempertahankan ikon dan panah
                         const iconHtml = item.querySelector('i') ? item.querySelector('i').outerHTML : '';
                         const text = item.textContent.trim();
                         display.innerHTML = `${iconHtml} ${text} <i class="fas fa-chevron-down arrow-down"></i>`;
                         display.dataset.value = item.dataset.value;
 
-                        // Update active state for items
                         options
                             .querySelectorAll(".custom-dropdown-item")
                             .forEach((opt) => opt.classList.remove("selected"));
@@ -1056,9 +1055,23 @@
                 }
             });
             
-            // =========================================================
-            // 🛠️ LOGIC FOR LONG TERM REMINDER CARDS
-            // =========================================================
+         
+            
+            // Logika untuk Tombol Filter Scrollable
+            const scrollFilterButtons = document.querySelectorAll(
+                ".scrollable-filter-options .filter-btn"
+            );
+            scrollFilterButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    scrollFilterButtons.forEach((btn) =>
+                        btn.classList.remove("filter-active")
+                    );
+                    this.classList.add("filter-active");
+                });
+            });
+
+
+            // Logika untuk Tab Reminder (3 Bulan, 6 Bulan)
             const reminderTabs = document.querySelectorAll(
                 ".reminder-tabs .tab-btn"
             );
@@ -1081,19 +1094,6 @@
                 });
             });
             
-            // Logika untuk Tombol Filter Bawah di Filter Section
-            const filterButtons = document.querySelectorAll(
-                ".tab-filters-top .filter-btn"
-            );
-            filterButtons.forEach((button) => {
-                button.addEventListener("click", function () {
-                    filterButtons.forEach((btn) =>
-                        btn.classList.remove("filter-active")
-                    );
-                    this.classList.add("filter-active");
-                });
-            });
-            
             // Logika untuk Tab Riwayat Reminder (Booking, Respon, Dikirim, Pending)
             const historyTabs = document.querySelectorAll(".history-tabs .tab-status");
             historyTabs.forEach(tab => {
@@ -1104,9 +1104,7 @@
             });
 
 
-            // =========================================================
-            // 🛠️ RIWAYAT HISTORY TABLE LOGIC
-            // =========================================================
+       
             
             const historyData = [
                 {
@@ -1114,7 +1112,6 @@
                     status3M: "Belum Direminder", hari3M: "1 dari 90 hari", urgensi3M: "NORMAL", target3M: "27 Jan 2026",
                     status6M: "Belum Direminder", hari6M: "1 dari 180 hari", urgensi6M: "NORMAL", target6M: "27 April 2026",
                 },
-                // Duplikasi data 10 kali (sesuai jumlah per page)
                 ...Array(9).fill({
                     orderNo: "S11771", date: "29 October 2025", time: "09:37", plat: "82755TRA", customer: "Bp Santo", phone: "+62 838-6387-6602",
                     status3M: "Belum Direminder", hari3M: "1 dari 90 hari", urgensi3M: "NORMAL", target3M: "27 Jan 2026",
