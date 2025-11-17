@@ -1,1409 +1,1238 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reminder Servis Jangka Panjang</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PITCAR Reminder Servis Jangka Panjang</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
-      body {
-        background-color: #f5f6fa;
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-      }
-      /* Sidebar */
-
-      .sidebar {
-        width: 80px;
-        background-color: #fff;
-        border-right: 1px solid #e6e6e6;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: width 0.3s ease;
-        overflow: hidden;
-        position: relative;
-        z-index: 10;
-      }
-
-      .sidebar:hover {
-        width: 240px;
-      }
-
-      .sidebar .logo {
-        text-align: center;
-        padding: 20px 0;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .sidebar .logo .full-logo {
-        width: 150px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .sidebar .logo .small-logo {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        opacity: 1;
-        transition: opacity 0.9s ease;
-        position: absolute;
-        object-fit: cover;
-        overflow: hidden;
-      }
-
-      .sidebar:hover .logo .full-logo {
-        opacity: 1;
-      }
-
-      .sidebar:hover .logo .small-logo {
-        opacity: 0;
-      }
-
-      .menu li span {
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        white-space: nowrap;
-      }
-
-      .sidebar:hover .menu li span {
-        opacity: 1;
-      }
-
-      .sidebar .user-section .user-info {
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .sidebar:hover .user-section .user-info {
-        opacity: 1;
-      }
-
-      .menu {
-        flex: 1;
-        padding: 10px 0;
-      }
-
-      .menu ul {
-        list-style: none;
-      }
-
-      .menu li {
-        padding: 12px 24px;
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        color: #333;
-        cursor: pointer;
-        transition: 0.3s;
-        position: relative; /* Untuk badge */
-      }
-
-      .menu li.active {
-        background-color: #fbeaea;
-        color: #c20000;
-        font-weight: 600;
-        border-left: 5px solid #c20000;
-        padding-left: 19px;
-      }
-
-      .menu li:hover:not(.active) {
-        background-color: #fbeaea;
-        color: #c20000;
-        font-weight: 600;
-      }
-
-      .menu li .badge-reminder {
-        position: absolute;
-        right: 20px;
-        background-color: #28a745;
-        color: white;
-        padding: 2px 6px;
-        border-radius: 10px;
-        font-size: 0.75em;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .sidebar:hover .menu li .badge-reminder {
-        opacity: 1;
-      }
-
-      /* Ikon Image di Sidebar */
-      .menu li img {
-        width: 24px;
-        height: 24px;
-        margin-right: 10px;
-        object-fit: contain;
-      }
-
-      .user-section {
-        padding: 15px 24px;
-        border-top: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .user-section img {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-      }
-
-      .main {
-        flex: 1;
-        padding: 25px 35px;
-        overflow-y: auto;
-      }
-
-      .header h2 {
-        font-size: 20px;
-        font-weight: 700;
-      }
-
-      .subtext {
-        color: #666;
-        font-size: 14px;
-        margin-top: 3px;
-        margin-bottom: 20px;
-      }
-
-      /* Stat Cards */
-      .stat-cards {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        margin-top: 20px;
-        margin-bottom: 30px;
-      }
-
-      .card {
-        background: #fff;
-        border-radius: 8px;
-        padding: 15px 20px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        color: white;
-        font-weight: 600;
-        min-height: 120px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-      .card h3 {
-        font-size: 14px;
-        opacity: 0.8;
-        margin-bottom: 5px;
-      }
-
-      .card .value {
-        font-size: 2.5em;
-        margin: 0;
-        line-height: 1.1;
-      }
-
-      .card .desc {
-        font-size: 0.9em;
-        margin: 5px 0 0;
-        opacity: 0.9;
-      }
-
-      .card .detail {
-        font-size: 0.7em;
-        margin: 5px 0 0;
-        opacity: 0.7;
-        text-transform: uppercase;
-      }
-
-      /* Warna Kartu Statistik */
-      .card.stat-blue {
-        background-color: #007bff;
-      }
-      .card.stat-red {
-        background-color: #dc3545;
-      }
-      .card.stat-green {
-        background-color: #28a745;
-      }
-      .card.stat-orange {
-        background-color: #ffc107;
-      }
-
-      /* Filter Section */
-      .filter-section {
-        background: #fff;
-        padding: 15px 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-      }
-
-      .filter-section h3 {
-        font-size: 16px;
-        font-weight: 700;
-      }
-
-      .filter-section p {
-        font-size: 14px;
-        color: #666;
-        margin-top: 3px;
-        margin-bottom: 15px;
-      }
-
-      .filter-controls {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-        align-items: flex-end; /* Align items to the bottom for labels */
-      }
-
-      .filter-group {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        min-width: 120px;
-        flex-grow: 1;
-      }
-
-      .filter-group label {
-        font-size: 12px;
-        color: #666;
-        margin-bottom: 4px;
-        font-weight: 500;
-      }
-
-      /* CUSTOM DROPDOWN STYLES */
-      .custom-dropdown-wrapper {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-      }
-
-      .custom-dropdown-display {
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 8px 10px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 14px;
-        color: #333;
-        min-height: 38px; /* Standard height for inputs/selects */
-      }
-
-      .custom-dropdown-display i {
-        margin-right: 8px;
-        color: #666;
-      }
-
-      .custom-dropdown-display .arrow-down {
-        margin-left: auto;
-        margin-right: 0;
-        color: #666;
-        transition: transform 0.2s;
-      }
-
-      .custom-dropdown-display.active .arrow-down {
-        transform: rotate(180deg);
-      }
-
-      .custom-dropdown-options {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: white;
-        border: 1px solid #ddd;
-        border-top: none;
-        border-radius: 0 0 4px 4px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 20;
-        max-height: 200px;
-        overflow-y: auto;
-        display: none; /* Hidden by default */
-      }
-
-      .custom-dropdown-options.show {
-        display: block;
-      }
-
-      .custom-dropdown-item {
-        padding: 10px 15px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        color: #333;
-      }
-
-      .custom-dropdown-item i {
-        margin-right: 10px;
-        color: #007bff; /* Warna ikon default */
-      }
-
-      .custom-dropdown-item:hover,
-      .custom-dropdown-item.selected {
-        background-color: #e9f5ff; /* Lighter blue for hover/selected */
-        color: #007bff;
-      }
-
-      /* Specific icon colors if needed */
-      .custom-dropdown-item .fa-hourglass-half {
-        color: #8e44ad;
-      } /* Ungu untuk Belum Diremind */
-      .custom-dropdown-item .fa-check-circle {
-        color: #28a745;
-      } /* Hijau untuk Sudah Dikirim */
-      .custom-dropdown-item .fa-comments {
-        color: #6f42c1;
-      } /* Ungu gelap untuk Ada Respon */
-      .custom-dropdown-item .fa-bullseye {
-        color: #dc3545;
-      } /* Merah untuk Terbooking */
-
-      .custom-dropdown-item .fa-exclamation-triangle.red {
-        color: #dc3545;
-      } /* Merah untuk Sangat Mendesak */
-      .custom-dropdown-item .fa-exclamation-triangle.orange {
-        color: #ffc107;
-      } /* Oranye untuk Mendesak */
-      .custom-dropdown-item .fa-clock {
-        color: #ff8c00;
-      } /* Oranye lebih terang untuk Segera */
-      .custom-dropdown-item .fa-check-square {
-        color: #28a745;
-      } /* Hijau untuk Normal */
-
-      .custom-date-range {
-        display: none; /* Hidden by default, shown by JS */
-        gap: 10px;
-        flex-grow: 2; /* Allows it to take more space if visible */
-      }
-
-      .filter-controls input[type="search"] {
-        padding: 8px 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        flex-grow: 2;
-        min-width: 150px;
-        font-size: 14px;
-        min-height: 38px;
-      }
-
-      .tab-filters-top button {
-        padding: 8px 15px;
-        border: 1px solid #ddd;
-        background-color: white;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 14px;
-        color: #666;
-        margin-right: 5px;
-      }
-
-      .tab-filters-top button.filter-active {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-      }
-
-      /* Reminder List Header */
-      .reminder-header h2 {
-        font-size: 1.5em;
-        font-weight: 700;
-        margin-top: 20px;
-        margin-bottom: 5px;
-      }
-
-      .reminder-header p {
-        font-size: 0.9em;
-        color: #777;
-        margin-bottom: 15px;
-      }
-
-      /* Tabs di bawah header reminder (Semua, 3 Bulan, 6 Bulan) */
-      .reminder-tabs button {
-        background-color: #fff;
-        border: none;
-        border-bottom: 2px solid transparent;
-        color: #666;
-        font-weight: 600;
-        padding: 8px 15px;
-        margin-right: 15px;
-        cursor: pointer;
-        transition: border-bottom 0.2s;
-      }
-
-      .reminder-tabs button.tab-active {
-        border-bottom: 2px solid #dc3545;
-        color: #dc3545;
-      }
-
-      /* Bagian Sangat Mendesak & Terlambat */
-      .urgency-header {
-        font-size: 1.1em;
-        font-weight: 700;
-        margin: 20px 0 15px;
-        color: #dc3545;
-      }
-
-      .reminder-cards-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-      }
-
-      /* Styling untuk Kartu Reminder Merah */
-      .reminder-card {
-        background-color: #fceaea;
-        border-left: 5px solid #dc3545;
-        padding: 15px;
-        border-radius: 6px;
-        position: relative;
-        color: #333;
-      }
-
-      .reminder-card-header {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.8em;
-        color: #999;
-        border-bottom: 1px dashed #e0c8c8;
-        padding-bottom: 5px;
-        margin-bottom: 10px;
-      }
-
-      .reminder-card-body p {
-        margin: 3px 0;
-      }
-
-      .reminder-card-body .name {
-        font-weight: 700;
-        font-size: 1.1em;
-      }
-
-      .reminder-card-body .service-date,
-      .reminder-card-body .reminder-type {
-        font-size: 0.85em;
-        color: #666;
-      }
-
-      .reminder-card .whatsapp-btn {
-        background-color: #25d366;
-        color: white;
-        border: none;
-        padding: 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-        font-size: 0.9em;
-        margin-top: 10px;
-      }
-
-      .reminder-card .whatsapp-btn i {
-        margin-right: 5px;
-      }
-
-      .reminder-card .status-tag {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background-color: #dc3545;
-        color: white;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-size: 0.7em;
-        text-transform: uppercase;
-      }
-
-      /* ===== NEW TABLE STYLES (Riwayat Reminder) ===== */
-      .history-section {
-        margin-top: 40px;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      }
-
-      .history-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .history-header h2 {
-        font-size: 1.5em;
-        font-weight: 700;
-        margin: 0;
-      }
-
-      .history-header p {
-        font-size: 0.9em;
-        color: #777;
-        margin: 0;
-      }
-
-      .history-tabs button {
-        padding: 8px 15px;
-        border: 1px solid #ddd;
-        background-color: white;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 14px;
-        color: #666;
-        margin-left: 5px;
-      }
-
-      .history-tabs button.active-tab {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-      }
-
-      .history-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-      }
-
-      .history-table th,
-      .history-table td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #eee;
-        text-align: left;
-      }
-
-      .history-table th {
-        background-color: #f8f9fa;
-        color: #6c757d;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-
-      .history-table tbody tr:hover {
-        background-color: #f5f5f5;
-      }
-
-      .status-cell span {
-        display: block;
-        font-weight: 600;
-      }
-
-      .status-cell .date {
-        font-size: 0.9em;
-        color: #999;
-      }
-
-      .status-cell .status-3m {
-        color: #007bff; /* Warna untuk Belum Direminder 3M */
-      }
-      .status-cell .status-6m {
-        color: #dc3545; /* Warna untuk Belum Direminder 6M */
-      }
-      .status-cell .normal {
-        font-weight: 400;
-      }
-
-      .action-buttons button {
-        background: none;
-        border: none;
-        color: #007bff;
-        cursor: pointer;
-        font-size: 13px;
-        margin-right: 10px;
-        padding: 0;
-      }
-
-      .action-buttons button.whatsapp-3m {
-        color: #28a745;
-      }
-      .action-buttons button.whatsapp-6m {
-        color: #dc3545;
-      }
-      .action-buttons button:hover {
-        text-decoration: underline;
-      }
-
-      .pagination-controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 15px;
-        font-size: 14px;
-      }
-
-      .page-size-dropdown {
-        padding: 5px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-
-      .page-numbers button {
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        background-color: white;
-        margin-left: 5px;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      .page-numbers button.active-page {
-        background-color: #dc3545;
-        color: white;
-        border-color: #dc3545;
-      }
-      /* ===== END NEW TABLE STYLES ===== */
+        /* ========================================================= */
+        /* BASE STYLES DARI KODE ASLI (Dashboard Reviews) */
+        /* ========================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa; /* Mengganti ke #f5f6fa agar sesuai dengan konten */
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 50px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            z-index: 1000;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.expanded {
+            width: 220px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            height: 55px;
+            border-bottom: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            margin-right: 10px;
+            margin-left: -3px;
+        }
+
+        .logo-text {
+            margin-left: 2px;
+            height: 28px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .menu {
+            padding-top: 8px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 13px 12px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background: #f5f5f5;
+            color: #d32f2f;
+        }
+
+        .menu-item.active {
+            background: #d32f2f;
+            color: white;
+            padding: 8px;
+            border-radius: 12px;
+            margin: 4px;
+        }
+        
+        /* Ganti img.menu-icon dengan span.menu-icon untuk Font Awesome */
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 3px;
+            color: #666; /* Warna default ikon */
+        }
+        
+        .menu-icon i {
+            font-size: 16px;
+        }
+        
+        /* Pastikan ikon aktif tetap putih */
+        .menu-item.active .menu-icon i {
+            color: white; 
+        }
+
+        .menu-user .menu-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-user .main-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .menu-user .sub-text {
+            font-size: 10px;
+            color: #888888;
+        }
+
+        .menu-user {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .menu-text {
+            margin-left: 18px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .new-badge {
+            margin-left: 20px;
+            background-color: #d4f5d4;
+            color: #28a745;
+            font-size: 0.7rem;
+            font-weight: 400;
+            padding: 5px 10px;
+            border-radius: 10px;
+            line-height: 1;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 25px 35px; /* Sesuaikan padding agar konten tidak terlalu menempel */
+            overflow-y: auto;
+            margin-left: 50px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 220px;
+        }
+
+        .dashboard {
+            max-width: 100%;
+            padding: 0; /* Hapus padding karena sudah di .main-content */
+            background: transparent;
+            border-radius: 0;
+            margin: 0;
+        }
+
+        .header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .header-left p {
+            color: #686868;
+            font-size: 14px; /* Dibuat sedikit lebih besar */
+            margin-top: 3px;
+        }
+
+        /* Hilangkan style header-right yang tidak relevan dengan halaman ini */
+        .header-right {
+             display: none !important; /* Hilangkan filter tanggal dari halaman review */
+        }
+        
+        /* ========================================================= */
+        /* 🎨 STYLE KONTEN BARU (Reminder Jangka Panjang) */
+        /* ========================================================= */
+
+        /* Stat Cards */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-cards .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: white;
+            font-weight: 600;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-cards .card h3 {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .stat-cards .card .value {
+            font-size: 2.5em;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .stat-cards .card .desc {
+            font-size: 0.9em;
+            margin: 5px 0 0;
+            opacity: 0.9;
+        }
+
+        .stat-cards .card .detail {
+            font-size: 0.7em;
+            margin: 5px 0 0;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+
+        /* Warna Kartu Statistik */
+        .card.stat-blue { background-color: #007bff; }
+        .card.stat-red { background-color: #dc3545; }
+        .card.stat-green { background-color: #28a745; }
+        .card.stat-orange { background-color: #ffc107; }
+
+        /* Filter Section */
+        .filter-section {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .filter-section h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .filter-section p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 3px;
+            margin-bottom: 15px;
+        }
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .filter-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 120px;
+            flex-grow: 1;
+        }
+        .filter-group label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .custom-dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .custom-dropdown-display {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #333;
+            min-height: 38px;
+        }
+        .custom-dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        .custom-dropdown-options.show { display: block; }
+        .custom-dropdown-item { padding: 10px 15px; cursor: pointer; display: flex; align-items: center; font-size: 14px; color: #333; }
+        .custom-dropdown-item:hover, .custom-dropdown-item.selected { background-color: #e9f5ff; color: #007bff; }
+        
+        .filter-controls input[type="search"] {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex-grow: 2;
+            min-width: 150px;
+            font-size: 14px;
+            min-height: 38px;
+        }
+
+        .tab-filters-top {
+            margin-top: 10px;
+        }
+        
+        .tab-filters-top button {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #666;
+            margin-right: 5px;
+        }
+
+        .tab-filters-top button.filter-active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        /* Reminder List Section (Kartu Merah) */
+        .reminder-header h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+
+        .reminder-header p {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .reminder-tabs button {
+            background-color: #fff;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: #666;
+            font-weight: 600;
+            padding: 8px 15px;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: border-bottom 0.2s;
+        }
+
+        .reminder-tabs button.tab-active {
+            border-bottom: 2px solid #dc3545;
+            color: #dc3545;
+        }
+
+        .urgency-header {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin: 20px 0 15px;
+            color: #dc3545;
+        }
+
+        .reminder-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .reminder-card {
+            background-color: #fceaea;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            border-radius: 6px;
+            position: relative;
+            color: #333;
+        }
+
+        .reminder-card-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            color: #999;
+            border-bottom: 1px dashed #e0c8c8;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .reminder-card-body p {
+            margin: 3px 0;
+        }
+
+        .reminder-card-body .name {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .reminder-card-body .service-date,
+        .reminder-card-body .reminder-type {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .reminder-card .whatsapp-btn {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .reminder-card .whatsapp-btn i {
+            margin-right: 5px;
+        }
+        
+        .reminder-card .status-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #dc3545;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.7em;
+            text-transform: uppercase;
+        }
+        
+        /* Riwayat Table Section */
+        .history-section {
+            margin-top: 40px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-tabs button {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        .history-tabs button.active-tab {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .history-table td {
+            line-height: 1.4;
+        }
+
+        .history-table th {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .history-table td:nth-child(2) small {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .status-cell {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #666;
+        }
+        .status-cell span {
+            display: block;
+            font-weight: 600;
+        }
+        .status-cell .status-main {
+             color: #dc3545; 
+        }
+        .status-cell .normal {
+            font-weight: 400;
+        }
+        .status-cell .date {
+            font-size: 11px;
+            color: #999;
+        }
+        
+        .action-buttons button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 0;
+            display: block;
+            margin-top: 3px;
+            text-align: left;
+        }
+
+        .action-buttons button.whatsapp-3m {
+            color: #28a745;
+            font-weight: 600;
+        }
+        .action-buttons button.whatsapp-6m {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        .action-buttons button:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .page-size-dropdown {
+            padding: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+
+        .page-numbers button {
+            padding: 4px 10px;
+            border: 1px solid #ddd;
+            background-color: white;
+            margin-left: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-numbers button.active-page {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        /* Styles untuk ikon di dropdown (agar konsisten dengan FA) */
+        .custom-dropdown-display i, .custom-dropdown-item i {
+            margin-right: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+        .custom-dropdown-item:hover i, .custom-dropdown-item.selected i {
+            color: #007bff;
+        }
+        
+        /* Warna spesifik untuk Urgensi */
+        .custom-dropdown-item .fa-exclamation-triangle.red { color: #dc3545; }
+        .custom-dropdown-item .fa-exclamation-triangle.orange { color: #ffc107; }
+        .custom-dropdown-item .fa-clock { color: #ff8c00; }
+        .custom-dropdown-item .fa-check-square { color: #28a745; }
+        .custom-dropdown-item .fa-hourglass-half { color: #8e44ad; }
+        .custom-dropdown-item .fa-check-circle { color: #28a745; }
+        .custom-dropdown-item .fa-comments { color: #6f42c1; }
+        .custom-dropdown-item .fa-bullseye { color: #dc3545; }
+        
     </style>
-  </head>
+</head>
 
-  <body>
-    <div class="sidebar">
-      <div>
+<body>
+   <div class="sidebar" id="sidebar">
         <div class="logo">
-          <img
-            src="https://via.placeholder.com/150x30/FF0000/FFFFFF?text=PITCAR"
-            alt="Pitcar Logo"
-            class="full-logo" />
-          <img
-            src="https://via.placeholder.com/40/FF0000/FFFFFF?text=P"
-            alt="Pitcar Small Logo"
-            class="small-logo" />
+            <img src="../image/logopitcar.png" alt="Logo" class="logo-icon">
+            <img src="../image/pitcar.png" alt="PITCAR" class="logo-text">
         </div>
+        
         <div class="menu">
-          <ul>
-            <li>
-              <img
-                src="https://via.placeholder.com/24/CCCCCC/000000?text=H"
-                alt="Dashboard Icon" /><span>Dashboard</span>
-            </li>
-            <li>
-              <img
-                src="https://via.placeholder.com/24/CCCCCC/000000?text=R"
-                alt="Reviews Icon" /><span>Reviews</span>
-            </li>
-            <li>
-              <img
-                src="https://via.placeholder.com/24/CCCCCC/000000?text=S"
-                alt="Survey Icon" /><span>Survey</span>
-            </li>
-            <li>
-              <img
-                src="https://via.placeholder.com/24/CCCCCC/000000?text=H"
-                alt="Reminder H+3 Icon" /><span>Reminder H+3</span>
-            </li>
-            <li class="active">
-              <img
-                src="https://via.placeholder.com/24/C20000/FFFFFF?text=Rm"
-                alt="Reminders Icon" /><span>Reminders</span
-              ><span class="badge-reminder">New</span>
-            </li>
-          </ul>
+            <a href="dashboard.html" class="menu-item active">
+                <img src="../image/ikonhome.png" alt="Dashboard" class="menu-icon">
+                <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="reviews.html" class="menu-item">
+                <img src="../image/ikonreviews.png" alt="Reviews" class="menu-icon">
+                <span class="menu-text">Reviews</span>
+            </a>
+            <a href="survey.html" class="menu-item">
+                <img src="../image/ikonsurvey.png" alt="Survey" class="menu-icon">
+                <span class="menu-text">Survey</span>
+            </a>
+            <a href="reminders_H+3.html" class="menu-item">
+                <img src="../image/ikonremindersH+3.png" alt="Reminder" class="menu-icon">
+                <span class="menu-text">Reminder H+3</span>
+            </a>
+            <a href="reminders.html" class="menu-item">
+                <img src="../image/ikonreminders.png" alt="Reminders" class="menu-icon">
+                <span class="menu-text">
+                    Reminders
+                    <span class="new-badge">New</span>
+                </span>
+            </a>
+            <a href="login.html" class="menu-item menu-user">
+                <img src="../image/ikonuser.png" alt="User" class="menu-icon">
+                <span class="menu-text">
+                    <span class="main-text">Pitcar Service</span>
+                    <span class="sub-text">User</span>
+                </span>
+            </a>
         </div>
-      </div>
-
-      <div class="user-section">
-        <img
-          src="https://via.placeholder.com/35/CCCCCC/000000?text=U"
-          alt="User Icon" />
-        <div class="user-info">
-          <div class="name">Pitcar Service</div>
-          <div>User</div>
-        </div>
-      </div>
+    </div>
+        <div class="logout-popup" id="logout-popup" style="display: none;" onclick="window.location.href='login.html'">Logout</div>
     </div>
 
-    <div class="main">
-      <div class="header">
-        <h2>Reminder Servis Jangka Panjang</h2>
-        <p class="subtext">
-          Kelola follow up pelanggan setelah 3 dan 6 bulan servis
-        </p>
-      </div>
+    <div class="main-content" id="mainContent">
+        <div class="dashboard">
+            <div class="header">
+                <div class="header-left">
+                    <h2>Reminder Servis Jangka Panjang</h2>
+                    <p>Kelola follow up pelanggan setelah 3 dan 6 bulan servis</p>
+                </div>
+            </div>
 
-      <section class="stat-cards">
-        <div class="card stat-blue">
-          <h3>Reminder 3 Bulan</h3>
-          <p class="value">7</p>
-          <p class="desc">Order perlu diremind</p>
-          <p class="detail">2192 Terlambat</p>
+            <section class="stat-cards">
+                <div class="card stat-blue">
+                    <h3>Reminder 3 Bulan</h3>
+                    <p class="value">7</p>
+                    <p class="desc">Order perlu diremind</p>
+                    <p class="detail">2192 Terlambat</p>
+                </div>
+                <div class="card stat-red">
+                    <h3>Reminder 6 Bulan</h3>
+                    <p class="value">1</p>
+                    <p class="desc">Order perlu diremind</p>
+                    <p class="detail">2192 Terlambat</p>
+                </div>
+                <div class="card stat-green">
+                    <h3>Rata-rata Rating</h3>
+                    <p class="value">4.8</p>
+                    <p class="desc">Bintang 5 / 5</p>
+                    <p class="detail">Dari 150 reviews</p>
+                </div>
+                <div class="card stat-orange">
+                    <h3>Tingkat Booking</h3>
+                    <p class="value">0%</p>
+                    <p class="desc">Konversi booking</p>
+                    <p class="detail">3M: 0/345 - 6M: 0/0</p>
+                </div>
+            </section>
+            
+            <section class="filter-section">
+                <h3>Filter Pencarian</h3>
+                <p>Gunakan fitur filter untuk mencari data yang spesifik.</p>
+
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label>Jenis Reminder</label>
+                        <div class="custom-dropdown-wrapper" id="dropdownJenisReminder">
+                            <div class="custom-dropdown-display" data-value="Semua Reminder">
+                                <i class="fas fa-redo-alt"></i> Semua Reminder
+                                <i class="fas fa-chevron-down arrow-down"></i>
+                            </div>
+                            <div class="custom-dropdown-options">
+                                <div class="custom-dropdown-item selected" data-value="Semua Reminder">
+                                    <i class="fas fa-redo-alt"></i> Semua Reminder
+                                </div>
+                                <div class="custom-dropdown-item" data-value="3 Bulan">
+                                    <i class="fas fa-calendar-alt"></i> 3 Bulan
+                                </div>
+                                <div class="custom-dropdown-item" data-value="6 Bulan">
+                                    <i class="fas fa-calendar-alt"></i> 6 Bulan
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <div class="custom-dropdown-wrapper" id="dropdownStatus">
+                            <div class="custom-dropdown-display" data-value="Belum Diremind">
+                                <i class="fas fa-hourglass-half"></i> Belum Diremind
+                                <i class="fas fa-chevron-down arrow-down"></i>
+                            </div>
+                            <div class="custom-dropdown-options">
+                                <div class="custom-dropdown-item" data-value="Semua Status">
+                                    <i class="fas fa-clipboard-list"></i> Semua Status
+                                </div>
+                                <div class="custom-dropdown-item selected" data-value="Belum Diremind">
+                                    <i class="fas fa-hourglass-half"></i> Belum Diremind
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Sudah Dikirim">
+                                    <i class="fas fa-check-circle"></i> Sudah Dikirim
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Ada Respon">
+                                    <i class="fas fa-comments"></i> Ada Respon
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Terbooking">
+                                    <i class="fas fa-bullseye"></i> Terbooking
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Tingkat Urgensi</label>
+                        <div class="custom-dropdown-wrapper" id="dropdownUrgensi">
+                            <div class="custom-dropdown-display" data-value="Semua">
+                                <i class="fas fa-redo-alt"></i> Semua
+                                <i class="fas fa-chevron-down arrow-down"></i>
+                            </div>
+                            <div class="custom-dropdown-options">
+                                <div class="custom-dropdown-item selected" data-value="Semua">
+                                    <i class="fas fa-redo-alt"></i> Semua
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Sangat Mendesak">
+                                    <i class="fas fa-exclamation-triangle red"></i> Sangat Mendesak
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Mendesak">
+                                    <i class="fas fa-exclamation-triangle orange"></i> Mendesak
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Segera">
+                                    <i class="fas fa-clock"></i> Segera
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Normal">
+                                    <i class="fas fa-check-square"></i> Normal
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Rentang Tanggal</label>
+                        <div class="custom-dropdown-wrapper" id="dropdownRentangTanggal">
+                            <div class="custom-dropdown-display" data-value="Semua Waktu">
+                                <i class="fas fa-calendar-alt"></i> Semua Waktu
+                                <i class="fas fa-chevron-down arrow-down"></i>
+                            </div>
+                            <div class="custom-dropdown-options">
+                                <div class="custom-dropdown-item selected" data-value="Semua Waktu">
+                                    <i class="fas fa-calendar-alt"></i> Semua Waktu
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Hari Ini">
+                                    <i class="fas fa-map-marker-alt"></i> Hari Ini
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Minggu Ini">
+                                    <i class="fas fa-calendar-week"></i> Minggu Ini
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Bulan Ini">
+                                    <i class="fas fa-chart-bar"></i> Bulan Ini
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Tahun Ini">
+                                    <i class="fas fa-chart-line"></i> Tahun Ini
+                                </div>
+                                <div class="custom-dropdown-item" data-value="Rentang Khusus">
+                                    <i class="fas fa-bullseye"></i> Rentang Khusus
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="search" placeholder="Cari Order/Customer atau Plat" id="searchCustomerLongTerm" />
+                </div>
+
+                <div class="tab-filters-top">
+                    <button class="filter-btn filter-active">Semua Reminder</button>
+                    <button class="filter-btn">Semua Status</button>
+                    <button class="filter-btn">3 Bulan</button>
+                    <button class="filter-btn">6 Bulan</button>
+                </div>
+            </section>
+            
+            <section class="reminder-list">
+                <div class="reminder-header">
+                    <h2>Reminder yang perlu dikirim</h2>
+                    <p>Order servis perlu difollow up berdasarkan jadwal</p>
+                </div>
+
+                <div class="reminder-tabs">
+                    <button class="tab-btn tab-active" data-filter="Semua">Semua</button>
+                    <button class="tab-btn" data-filter="3Bulan">3 Bulan</button>
+                    <button class="tab-btn" data-filter="6Bulan">6 Bulan</button>
+                </div>
+
+                <h3 class="urgency-header">Sangat Mendesak & Terlambat</h3>
+
+                <div class="reminder-cards-grid">
+                    <div class="reminder-card" data-reminder-type="3Bulan">
+                        <span class="status-tag">overdue</span>
+                        <div class="reminder-card-header">
+                            <span>Order #29390</span>
+                            <span>9/10/20</span>
+                        </div>
+                        <div class="reminder-card-body">
+                            <p class="name">Agung Sumbing</p>
+                            <p class="service-date">B 9901 AB</p>
+                            <p class="service-date">Servis Terakhir: 28/07/20</p>
+                            <p class="reminder-type">Reminder 3 Bulan</p>
+                        </div>
+                        <button class="whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i> Kirim Whatsapp
+                        </button>
+                    </div>
+                    <div class="reminder-card" data-reminder-type="3Bulan">
+                        <span class="status-tag">overdue</span>
+                        <div class="reminder-card-header">
+                            <span>Order #29391</span><span>9/10/20</span>
+                        </div>
+                        <div class="reminder-card-body">
+                            <p class="name">Agung Sumbing</p>
+                            <p class="service-date">B 9901 AB</p>
+                            <p class="service-date">Servis Terakhir: 28/07/20</p>
+                            <p class="reminder-type">Reminder 3 Bulan</p>
+                        </div>
+                        <button class="whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i> Kirim Whatsapp
+                        </button>
+                    </div>
+                    <div class="reminder-card" data-reminder-type="6Bulan">
+                        <span class="status-tag">overdue</span>
+                        <div class="reminder-card-header">
+                            <span>Order #29392</span><span>9/10/20</span>
+                        </div>
+                        <div class="reminder-card-body">
+                            <p class="name">Budi Santoso</p>
+                            <p class="service-date">D 5678 EF</p>
+                            <p class="service-date">Servis Terakhir: 09/04/20</p>
+                            <p class="reminder-type">Reminder 6 Bulan</p>
+                        </div>
+                        <button class="whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i> Kirim Whatsapp
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="history-section">
+                <div class="history-header">
+                    <div>
+                        <h2>Riwayat Reminder</h2>
+                        <p>Pantau dan kelola Follow Up yang sudah dilakukan</p>
+                    </div>
+                    <div class="history-tabs">
+                        <button class="tab-status" data-status="Booking">Booking</button>
+                        <button class="tab-status" data-status="Respon">Respon</button>
+                        <button class="tab-status" data-status="Dikirim">Dikirim</button>
+                        <button class="tab-status active-tab" data-status="Pending">Pending</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>IN ORDER</th>
+                                <th>PELANGGAN</th>
+                                <th>STATUS 3M</th>
+                                <th>STATUS 6M</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-controls">
+                    <div>
+                        <span id="showingInfoHistory">Showing 1-10 of 7291</span>
+                        <select class="page-size-dropdown" id="itemsPerPageHistory">
+                            <option value="10">10 / Page</option>
+                            <option value="25">25 / Page</option>
+                            <option value="50">50 / Page</option>
+                            <option value="100">100 / Page</option>
+                        </select>
+                    </div>
+                    <div class="page-numbers" id="pageNumbersHistory">
+                        </div>
+                </div>
+            </section>
+
         </div>
-        <div class="card stat-red">
-          <h3>Reminder 6 Bulan</h3>
-          <p class="value">1</p>
-          <p class="desc">Order perlu diremind</p>
-          <p class="detail">2192 Terlambat</p>
-        </div>
-        <div class="card stat-green">
-          <h3>Reminder 9 Bulan</h3>
-          <p class="value">1%</p>
-          <p class="desc">Rata-rata (target)</p>
-          <p class="detail">3M | 6M | 9M | 12M</p>
-        </div>
-        <div class="card stat-orange">
-          <h3>Tingkat Booking</h3>
-          <p class="value">0%</p>
-          <p class="desc">Konversi booking</p>
-          <p class="detail">3M: 0/345 - 6M: 0/0</p>
-        </div>
-      </section>
-
-      <section class="filter-section">
-        <h3>Filter Pencarian</h3>
-        <p>Gunakan fitur filter untuk mencari data yang spesifik.</p>
-
-        <div class="filter-controls">
-          <div class="filter-group">
-            <label>Jenis Reminder</label>
-            <div class="custom-dropdown-wrapper">
-              <div class="custom-dropdown-display" data-value="Semua Reminder">
-                <i class="fas fa-redo-alt"></i> Semua Reminder
-                <i class="fas fa-chevron-down arrow-down"></i>
-              </div>
-              <div class="custom-dropdown-options">
-                <div
-                  class="custom-dropdown-item selected"
-                  data-value="Semua Reminder">
-                  <i class="fas fa-redo-alt"></i> Semua Reminder
-                </div>
-                <div class="custom-dropdown-item" data-value="3 Bulan">
-                  <i class="fas fa-calendar-alt"></i> 3 Bulan
-                </div>
-                <div class="custom-dropdown-item" data-value="6 Bulan">
-                  <i class="fas fa-calendar-alt"></i> 6 Bulan
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <label>Status</label>
-            <div class="custom-dropdown-wrapper">
-              <div class="custom-dropdown-display" data-value="Semua Status">
-                <i class="fas fa-clipboard-list"></i> Semua Status
-                <i class="fas fa-chevron-down arrow-down"></i>
-              </div>
-              <div class="custom-dropdown-options">
-                <div
-                  class="custom-dropdown-item selected"
-                  data-value="Semua Status">
-                  <i class="fas fa-clipboard-list"></i> Semua Status
-                </div>
-                <div class="custom-dropdown-item" data-value="Belum Diremind">
-                  <i class="fas fa-hourglass-half"></i> Belum Diremind
-                </div>
-                <div class="custom-dropdown-item" data-value="Sudah Dikirim">
-                  <i class="fas fa-check-circle"></i> Sudah Dikirim
-                </div>
-                <div class="custom-dropdown-item" data-value="Ada Respon">
-                  <i class="fas fa-comments"></i> Ada Respon
-                </div>
-                <div class="custom-dropdown-item" data-value="Terbooking">
-                  <i class="fas fa-bullseye"></i> Terbooking
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <label>Tingkat Urgensi</label>
-            <div class="custom-dropdown-wrapper">
-              <div class="custom-dropdown-display" data-value="Semua">
-                <i class="fas fa-redo-alt"></i> Semua
-                <i class="fas fa-chevron-down arrow-down"></i>
-              </div>
-              <div class="custom-dropdown-options">
-                <div class="custom-dropdown-item selected" data-value="Semua">
-                  <i class="fas fa-redo-alt"></i> Semua
-                </div>
-                <div class="custom-dropdown-item" data-value="Sangat Mendesak">
-                  <i class="fas fa-exclamation-triangle red"></i> Sangat
-                  Mendesak
-                </div>
-                <div class="custom-dropdown-item" data-value="Mendesak">
-                  <i class="fas fa-exclamation-triangle orange"></i> Mendesak
-                </div>
-                <div class="custom-dropdown-item" data-value="Segera">
-                  <i class="fas fa-clock"></i> Segera
-                </div>
-                <div class="custom-dropdown-item" data-value="Normal">
-                  <i class="fas fa-check-square"></i> Normal
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="filter-group">
-            <label>Rentang Tanggal</label>
-            <div class="custom-dropdown-wrapper">
-              <div class="custom-dropdown-display" data-value="Semua Waktu">
-                <i class="fas fa-calendar-alt"></i> Semua Waktu
-                <i class="fas fa-chevron-down arrow-down"></i>
-              </div>
-              <div class="custom-dropdown-options">
-                <div
-                  class="custom-dropdown-item selected"
-                  data-value="Semua Waktu">
-                  <i class="fas fa-calendar-alt"></i> Semua Waktu
-                </div>
-                <div class="custom-dropdown-item" data-value="Hari Ini">
-                  <i class="fas fa-map-marker-alt"></i> Hari Ini
-                </div>
-                <div class="custom-dropdown-item" data-value="Minggu Ini">
-                  <i class="fas fa-calendar-week"></i> Minggu Ini
-                </div>
-                <div class="custom-dropdown-item" data-value="Bulan Ini">
-                  <i class="fas fa-chart-bar"></i> Bulan Ini
-                </div>
-                <div class="custom-dropdown-item" data-value="Tahun Ini">
-                  <i class="fas fa-chart-line"></i> Tahun Ini
-                </div>
-                <div class="custom-dropdown-item" data-value="Rentang Khusus">
-                  <i class="fas fa-bullseye"></i> Rentang Khusus
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <input type="search" placeholder="Cari berdasarkan" />
-        </div>
-
-        <div class="tab-filters-top">
-          <button class="filter-btn filter-active">Semua Reminder</button>
-          <button class="filter-btn">Semua Status</button>
-          <button class="filter-btn">3 Bulan</button>
-          <button class="filter-btn">6 Bulan</button>
-        </div>
-      </section>
-
-      <section class="reminder-list">
-        <div class="reminder-header">
-          <h2>Reminder yang perlu dikirim</h2>
-          <p>Order servis perlu difollow up berdasarkan jadwal</p>
-        </div>
-
-        <div class="reminder-tabs">
-          <button class="tab-btn tab-active" data-filter="Semua">Semua</button>
-          <button class="tab-btn" data-filter="3Bulan">3 Bulan</button>
-          <button class="tab-btn" data-filter="6Bulan">6 Bulan</button>
-        </div>
-
-        <h3 class="urgency-header">Sangat Mendesak & Terlambat</h3>
-
-        <div class="reminder-cards-grid">
-          <div class="reminder-card">
-            <span class="status-tag">overdue</span>
-            <div class="reminder-card-header">
-              <span>Order #29390</span>
-              <span>9/10/20</span>
-            </div>
-            <div class="reminder-card-body">
-              <p class="name">Agung Sumbing</p>
-              <p class="service-date">B 9901 AB</p>
-              <p class="service-date">Servis Terakhir: 28/07/20</p>
-              <p class="reminder-type">Reminder 3 Bulan</p>
-            </div>
-            <button class="whatsapp-btn">
-              <i class="fab fa-whatsapp"></i> Kirim Whatsapp
-            </button>
-          </div>
-          <div class="reminder-card">
-            <span class="status-tag">overdue</span>
-            <div class="reminder-card-header">
-              <span>Order #29391</span><span>9/10/20</span>
-            </div>
-            <div class="reminder-card-body">
-              <p class="name">Agung Sumbing</p>
-              <p class="service-date">B 9901 AB</p>
-              <p class="service-date">Servis Terakhir: 28/07/20</p>
-              <p class="reminder-type">Reminder 3 Bulan</p>
-            </div>
-            <button class="whatsapp-btn">
-              <i class="fab fa-whatsapp"></i> Kirim Whatsapp
-            </button>
-          </div>
-          <div class="reminder-card">
-            <span class="status-tag">overdue</span>
-            <div class="reminder-card-header">
-              <span>Order #29392</span><span>9/10/20</span>
-            </div>
-            <div class="reminder-card-body">
-              <p class="name">Agung Sumbing</p>
-              <p class="service-date">B 9901 AB</p>
-              <p class="service-date">Servis Terakhir: 28/07/20</p>
-              <p class="reminder-type">Reminder 3 Bulan</p>
-            </div>
-            <button class="whatsapp-btn">
-              <i class="fab fa-whatsapp"></i> Kirim Whatsapp
-            </button>
-          </div>
-          <div class="reminder-card">
-            <span class="status-tag">overdue</span>
-            <div class="reminder-card-header">
-              <span>Order #29393</span><span>9/10/20</span>
-            </div>
-            <div class="reminder-card-body">
-              <p class="name">Agung Sumbing</p>
-              <p class="service-date">B 9901 AB</p>
-              <p class="service-date">Servis Terakhir: 28/07/20</p>
-              <p class="reminder-type">Reminder 3 Bulan</p>
-            </div>
-            <button class="whatsapp-btn">
-              <i class="fab fa-whatsapp"></i> Kirim Whatsapp
-            </button>
-          </div>
-          <div class="reminder-card">
-            <span class="status-tag">overdue</span>
-            <div class="reminder-card-header">
-              <span>Order #29394</span><span>9/10/20</span>
-            </div>
-            <div class="reminder-card-body">
-              <p class="name">Agung Sumbing</p>
-              <p class="service-date">B 9901 AB</p>
-              <p class="service-date">Servis Terakhir: 28/07/20</p>
-              <p class="reminder-type">Reminder 3 Bulan</p>
-            </div>
-            <button class="whatsapp-btn">
-              <i class="fab fa-whatsapp"></i> Kirim Whatsapp
-            </button>
-          </div>
-          <div class="reminder-card">
-            <span class="status-tag">overdue</span>
-            <div class="reminder-card-header">
-              <span>Order #29395</span><span>9/10/20</span>
-            </div>
-            <div class="reminder-card-body">
-              <p class="name">Agung Sumbing</p>
-              <p class="service-date">B 9901 AB</p>
-              <p class="service-date">Servis Terakhir: 28/07/20</p>
-              <p class="reminder-type">Reminder 3 Bulan</p>
-            </div>
-            <button class="whatsapp-btn">
-              <i class="fab fa-whatsapp"></i> Kirim Whatsapp
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section class="history-section">
-        <div class="history-header">
-          <div>
-            <h2>Riwayat Reminder</h2>
-            <p>Pantau dan kelola Follow Up yang sudah dilakukan</p>
-          </div>
-          <div class="history-tabs">
-            <button>Booking</button>
-            <button>Respon</button>
-            <button>Dikirim</button>
-            <button class="active-tab">Pending</button>
-          </div>
-        </div>
-
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>IN ORDER</th>
-              <th>PELANGGAN</th>
-              <th>STATUS 3M</th>
-              <th>STATUS 6M</th>
-              <th>AKSI</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                **S11770**<br />
-                29 October 2025<br />
-                09:37<br />
-                82755TRA
-              </td>
-              <td>
-                **Bp Santo**<br />
-                +62 838-6387-6602
-              </td>
-              <td class="status-cell">
-                <span class="status-3m">Belum Direminder</span>
-                <span class="normal">1 dari 90 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 Jan 2026</span>
-              </td>
-              <td class="status-cell">
-                <span class="status-6m">Belum Direminder</span>
-                <span class="normal">1 dari 180 hari</span>
-                <span class="normal">NORMAL</span>
-                <span class="date">Target 27 April 2026</span>
-              </td>
-              <td class="action-buttons">
-                <button>Update</button>
-                <button class="whatsapp-3m">3M WA</button>
-                <button class="whatsapp-6m">6M WA</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="pagination-controls">
-          <div>
-            Showing 1-10 of 7291
-            <select class="page-size-dropdown">
-              <option>10 / Page</option>
-            </select>
-          </div>
-          <div class="page-numbers">
-            <button>First</button>
-            <button class="active-page">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>4</button>
-            <button>5</button>
-            <button>Last</button>
-          </div>
-        </div>
-      </section>
-      </div>
+    </div>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const dropdownWrappers = document.querySelectorAll(
-          ".custom-dropdown-wrapper"
-        );
+        document.addEventListener("DOMContentLoaded", function () {
+            // =========================================================
+            // 🛠️ SIDEBAR LOGIC (DARI KODE ASLI)
+            // =========================================================
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("mainContent");
+            const userBtn = document.getElementById("user-btn");
+            const logoutPopup = document.getElementById("logout-popup");
+            
+            // Ganti link menu-user agar dapat memicu logout popup
+            const userMenuItem = document.querySelector('.menu-user');
+            if (userMenuItem) {
+                userMenuItem.removeAttribute('href');
+            }
 
-        dropdownWrappers.forEach((wrapper) => {
-          const display = wrapper.querySelector(".custom-dropdown-display");
-          const options = wrapper.querySelector(".custom-dropdown-options");
 
-          display.addEventListener("click", () => {
-            // Close other open dropdowns
-            document
-              .querySelectorAll(".custom-dropdown-options.show")
-              .forEach((openOptions) => {
-                if (openOptions !== options) {
-                  openOptions.classList.remove("show");
-                  openOptions.previousElementSibling.classList.remove("active");
-                }
-              });
-            options.classList.toggle("show");
-            display.classList.toggle("active");
-          });
-
-          options.querySelectorAll(".custom-dropdown-item").forEach((item) => {
-            item.addEventListener("click", () => {
-              // Update display text and icon
-              display.innerHTML =
-                item.innerHTML +
-                ' <i class="fas fa-chevron-down arrow-down"></i>';
-              display.dataset.value = item.dataset.value;
-
-              // Update active state for items
-              options
-                .querySelectorAll(".custom-dropdown-item")
-                .forEach((opt) => opt.classList.remove("selected"));
-              item.classList.add("selected");
-
-              options.classList.remove("show");
-              display.classList.remove("active");
-
-              // Trigger a custom change event if needed for filtering
-              const event = new Event("change", { bubbles: true });
-              display.dispatchEvent(event);
+            // Desktop hover otomatis
+            sidebar.addEventListener("pointerenter", () => {
+                sidebar.classList.add("expanded");
+                mainContent.classList.add("expanded");
             });
-          });
-        });
 
-        // Close dropdowns when clicking outside
-        document.addEventListener("click", (event) => {
-          if (!event.target.closest(".custom-dropdown-wrapper")) {
-            document
-              .querySelectorAll(".custom-dropdown-options.show")
-              .forEach((options) => {
-                options.classList.remove("show");
-                options.previousElementSibling.classList.remove("active");
-              });
-          }
-        });
+            sidebar.addEventListener("pointerleave", () => {
+                sidebar.classList.remove("expanded");
+                mainContent.classList.remove("expanded");
+                logoutPopup.style.display = "none";
+            });
 
-        // ====================================
-        // OTHER JAVASCRIPT LOGIC
-        // ====================================
+            // Pop Up Logout
+            userBtn.addEventListener("click", (event) => {
+                event.stopPropagation();
+                // Pastikan pop up muncul di dalam sidebar saat diperluas
+                const sidebarRect = sidebar.getBoundingClientRect();
+                if(sidebar.classList.contains('expanded')) {
+                     logoutPopup.style.left = '20px';
+                     logoutPopup.style.bottom = '10px';
+                     logoutPopup.style.width = 'calc(100% - 40px)';
+                     logoutPopup.style.position = 'absolute'; // Ubah posisi
+                } else {
+                     logoutPopup.style.left = '10px';
+                     logoutPopup.style.bottom = '50px';
+                     logoutPopup.style.width = 'auto';
+                     logoutPopup.style.position = 'fixed'; // Kembalikan posisi
+                }
 
-        // Logika untuk Tombol Filter Bawah di Filter Section
-        const filterButtons = document.querySelectorAll(
-          ".tab-filters-top .filter-btn"
-        );
-        filterButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            filterButtons.forEach((btn) =>
-              btn.classList.remove("filter-active")
+                logoutPopup.style.display =
+                    logoutPopup.style.display === "block" ? "none" : "block";
+            });
+
+            document.addEventListener("click", (event) => {
+                if (
+                    !userBtn.contains(event.target) &&
+                    !logoutPopup.contains(event.target)
+                ) {
+                    logoutPopup.style.display = "none";
+                }
+            });
+
+
+            // =========================================================
+            // 🛠️ CUSTOM DROPDOWN LOGIC
+            // =========================================================
+            const dropdownWrappers = document.querySelectorAll(
+                ".custom-dropdown-wrapper"
             );
-            this.classList.add("filter-active");
-            console.log(`Filter Bawah Aktif: ${this.textContent}`);
-          });
-        });
 
-        // Logika untuk Tab Reminder (Semua, 3 Bulan, 6 Bulan) di bawah header reminder
-        const reminderTabs = document.querySelectorAll(
-          ".reminder-tabs .tab-btn"
-        );
-        reminderTabs.forEach((tab) => {
-          tab.addEventListener("click", function () {
-            reminderTabs.forEach((t) => t.classList.remove("tab-active"));
-            this.classList.add("tab-active");
-            console.log(`Tab Reminder Aktif: ${this.textContent}`);
-          });
-        });
+            dropdownWrappers.forEach((wrapper) => {
+                const display = wrapper.querySelector(".custom-dropdown-display");
+                const options = wrapper.querySelector(".custom-dropdown-options");
 
-        // Logika Hover Sidebar
-        const sidebar = document.querySelector(".sidebar");
-        const menuItems = document.querySelectorAll(".menu li");
-        const userSectionInfo = document.querySelector(
-          ".user-section .user-info"
-        );
-        const fullLogo = document.querySelector(".sidebar .logo .full-logo");
-        const smallLogo = document.querySelector(".sidebar .logo .small-logo");
+                display.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    // Close other open dropdowns
+                    document
+                        .querySelectorAll(".custom-dropdown-options.show")
+                        .forEach((openOptions) => {
+                            if (openOptions !== options) {
+                                openOptions.classList.remove("show");
+                                openOptions.previousElementSibling.classList.remove("active");
+                            }
+                        });
+                    options.classList.toggle("show");
+                    display.classList.toggle("active");
+                });
 
-        sidebar.addEventListener("mouseenter", () => {
-          menuItems.forEach((li) => {
-            const span = li.querySelector("span");
-            if (span) span.style.opacity = 1;
-            const badge = li.querySelector(".badge-reminder");
-            if (badge) badge.style.opacity = 1;
-          });
-          if (userSectionInfo) userSectionInfo.style.opacity = 1;
-          if (fullLogo) fullLogo.style.opacity = 1;
-          if (smallLogo) smallLogo.style.opacity = 0;
-        });
+                options.querySelectorAll(".custom-dropdown-item").forEach((item) => {
+                    item.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        
+                        // Copy content, mempertahankan ikon dan panah
+                        const iconHtml = item.querySelector('i') ? item.querySelector('i').outerHTML : '';
+                        const text = item.textContent.trim();
+                        display.innerHTML = `${iconHtml} ${text} <i class="fas fa-chevron-down arrow-down"></i>`;
+                        display.dataset.value = item.dataset.value;
 
-        sidebar.addEventListener("mouseleave", () => {
-          menuItems.forEach((li) => {
-            const span = li.querySelector("span");
-            if (span) span.style.opacity = 0;
-            const badge = li.querySelector(".badge-reminder");
-            if (badge) badge.style.opacity = 0;
-          });
-          if (userSectionInfo) userSectionInfo.style.opacity = 0;
-          if (fullLogo) fullLogo.style.opacity = 0;
-          if (smallLogo) smallLogo.style.opacity = 1;
+                        // Update active state for items
+                        options
+                            .querySelectorAll(".custom-dropdown-item")
+                            .forEach((opt) => opt.classList.remove("selected"));
+                        item.classList.add("selected");
+
+                        options.classList.remove("show");
+                        display.classList.remove("active");
+                    });
+                });
+            });
+
+            document.addEventListener("click", (event) => {
+                if (!event.target.closest(".custom-dropdown-wrapper")) {
+                    document
+                        .querySelectorAll(".custom-dropdown-options.show")
+                        .forEach((options) => {
+                            options.classList.remove("show");
+                            options.previousElementSibling.classList.remove("active");
+                        });
+                }
+            });
+            
+            // =========================================================
+            // 🛠️ LOGIC FOR LONG TERM REMINDER CARDS
+            // =========================================================
+            const reminderTabs = document.querySelectorAll(
+                ".reminder-tabs .tab-btn"
+            );
+            const reminderCards = document.querySelectorAll(".reminder-card");
+
+            reminderTabs.forEach((tab) => {
+                tab.addEventListener("click", function () {
+                    reminderTabs.forEach((t) => t.classList.remove("tab-active"));
+                    this.classList.add("tab-active");
+                    
+                    const filter = this.dataset.filter;
+                    reminderCards.forEach(card => {
+                        const type = card.dataset.reminderType;
+                        if (filter === 'Semua' || filter === type) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Logika untuk Tombol Filter Bawah di Filter Section
+            const filterButtons = document.querySelectorAll(
+                ".tab-filters-top .filter-btn"
+            );
+            filterButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    filterButtons.forEach((btn) =>
+                        btn.classList.remove("filter-active")
+                    );
+                    this.classList.add("filter-active");
+                });
+            });
+            
+            // Logika untuk Tab Riwayat Reminder (Booking, Respon, Dikirim, Pending)
+            const historyTabs = document.querySelectorAll(".history-tabs .tab-status");
+            historyTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    historyTabs.forEach(t => t.classList.remove('active-tab'));
+                    this.classList.add('active-tab');
+                });
+            });
+
+
+            // =========================================================
+            // 🛠️ RIWAYAT HISTORY TABLE LOGIC
+            // =========================================================
+            
+            const historyData = [
+                {
+                    orderNo: "S11770", date: "29 October 2025", time: "09:37", plat: "82755TRA", customer: "Bp Santo", phone: "+62 838-6387-6602",
+                    status3M: "Belum Direminder", hari3M: "1 dari 90 hari", urgensi3M: "NORMAL", target3M: "27 Jan 2026",
+                    status6M: "Belum Direminder", hari6M: "1 dari 180 hari", urgensi6M: "NORMAL", target6M: "27 April 2026",
+                },
+                // Duplikasi data 10 kali (sesuai jumlah per page)
+                ...Array(9).fill({
+                    orderNo: "S11771", date: "29 October 2025", time: "09:37", plat: "82755TRA", customer: "Bp Santo", phone: "+62 838-6387-6602",
+                    status3M: "Belum Direminder", hari3M: "1 dari 90 hari", urgensi3M: "NORMAL", target3M: "27 Jan 2026",
+                    status6M: "Belum Direminder", hari6M: "1 dari 180 hari", urgensi6M: "NORMAL", target6M: "27 April 2026",
+                }),
+                {
+                    orderNo: "S11780", date: "28 October 2025", time: "10:00", plat: "B1234CD", customer: "Ibu Rina", phone: "+62 812-3456-7890",
+                    status3M: "Sudah Direminder", hari3M: "5 dari 90 hari", urgensi3M: "MENDESAK", target3M: "26 Jan 2026",
+                    status6M: "Belum Direminder", hari6M: "1 dari 180 hari", urgensi6M: "NORMAL", target6M: "26 April 2026",
+                },
+            ];
+            
+            const totalItemsHistory = 7291; 
+            
+            let currentHistoryPage = 1;
+            let historyItemsPerPage = 10;
+            let currentHistoryData = [...historyData];
+
+            function getStatusClass(status) {
+                if (status.includes("Belum")) return 'status-main';
+                return 'normal';
+            }
+
+            function renderHistoryTable(data, page = 1) {
+                const tbody = document.getElementById("historyTableBody");
+                tbody.innerHTML = "";
+
+                const startIndex = (page - 1) * historyItemsPerPage;
+                const endIndex = startIndex + historyItemsPerPage;
+                const pageData = data.slice(startIndex, endIndex);
+
+                pageData.forEach((item) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>
+                            <strong>${item.orderNo}</strong><br />
+                            ${item.date}<br />
+                            ${item.time}<br />
+                            ${item.plat}
+                        </td>
+                        <td>
+                            <strong>${item.customer}</strong><br />
+                            <small>${item.phone}</small>
+                        </td>
+                        <td class="status-cell">
+                            <span class="${getStatusClass(item.status3M)}">${item.status3M}</span>
+                            <span class="normal">${item.hari3M}</span>
+                            <span class="normal">${item.urgensi3M}</span>
+                            <span class="date">Target ${item.target3M}</span>
+                        </td>
+                        <td class="status-cell">
+                            <span class="${getStatusClass(item.status6M)}">${item.status6M}</span>
+                            <span class="normal">${item.hari6M}</span>
+                            <span class="normal">${item.urgensi6M}</span>
+                            <span class="date">Target ${item.target6M}</span>
+                        </td>
+                        <td class="action-buttons">
+                            <button>Update</button>
+                            <button class="whatsapp-3m">3M WA</button>
+                            <button class="whatsapp-6m">6M WA</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                renderHistoryPagination(data.length, page);
+            }
+
+            function renderHistoryPagination(currentTotalItems, currentPage) {
+                const totalPages = Math.ceil(currentTotalItems / historyItemsPerPage);
+                const pageNumbersDiv = document.getElementById("pageNumbersHistory");
+                const showingInfoSpan = document.getElementById("showingInfoHistory");
+                const totalDisplay = totalItemsHistory;
+
+                showingInfoSpan.textContent = `Showing ${Math.min((currentPage - 1) * historyItemsPerPage + 1, totalDisplay)}-${Math.min(currentPage * historyItemsPerPage, totalDisplay)} of ${totalDisplay}`;
+
+                let paginationHTML = '';
+                if (totalPages > 1) {
+                    paginationHTML += `<button onclick="goToHistoryPage(1)">First</button>`;
+                    
+                    let startPage = Math.max(1, currentPage - 2);
+                    let endPage = Math.min(totalPages, currentPage + 2);
+
+                    if (startPage > 1) paginationHTML += `<span>...</span>`;
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        paginationHTML += `<button class="${i === currentPage ? "active-page" : ""}" onclick="goToHistoryPage(${i})">${i}</button>`;
+                    }
+                    
+                    if (endPage < totalPages) paginationHTML += `<span>...</span>`;
+
+
+                    paginationHTML += `<button onclick="goToHistoryPage(${totalPages})">Last</button>`;
+                } else {
+                    paginationHTML = `<button class="active-page">1</button>`;
+                }
+
+                pageNumbersDiv.innerHTML = paginationHTML;
+            }
+
+            // Fungsi Global untuk Paginasi
+            window.goToHistoryPage = function(page) {
+                currentHistoryPage = page;
+                renderHistoryTable(currentHistoryData, currentHistoryPage);
+            };
+
+            // Event listener untuk items per page change
+            document
+                .getElementById("itemsPerPageHistory")
+                .addEventListener("change", function () {
+                    historyItemsPerPage = parseInt(this.value);
+                    currentHistoryPage = 1;
+                    renderHistoryTable(currentHistoryData, currentHistoryPage);
+                });
+
+            // Initial rendering of the history table
+            renderHistoryTable(currentHistoryData, currentHistoryPage);
         });
-      });
     </script>
-  </body>
+</body>
 </html>
